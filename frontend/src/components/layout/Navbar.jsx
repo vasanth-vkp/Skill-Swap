@@ -30,7 +30,7 @@ export default function Navbar() {
 
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link to="/#explore" className="text-sm font-semibold text-slate-700 hover:text-amber-600 transition-colors">
+            <Link to="/explore" className="text-sm font-semibold text-slate-700 hover:text-amber-600 transition-colors">
               Explore Skills
             </Link>
             <Link to="/#how-it-works" className="text-sm font-semibold text-slate-700 hover:text-amber-600 transition-colors">
@@ -102,7 +102,7 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="sm:hidden border-b border-stone-200 bg-[#FAF8F5] px-4 pt-3 pb-6 space-y-3">
           <Link
-            to="/#explore"
+            to="/explore"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 rounded-xl text-base font-semibold text-slate-800 hover:bg-stone-100"
           >
