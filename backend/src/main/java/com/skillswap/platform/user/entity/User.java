@@ -35,6 +35,12 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt = Instant.now();
 
+    @Column(name = "average_rating")
+    private Double averageRating = 5.0;
+
+    @Column(name = "total_reviews")
+    private Integer totalReviews = 0;
+
     public User() {}
 
     public User(String name, String email, String passwordHash, String location) {
@@ -116,5 +122,21 @@ public class User {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Integer getTotalReviews() {
+        return totalReviews;
+    }
+
+    public void setTotalReviews(Integer totalReviews) {
+        this.totalReviews = totalReviews;
     }
 }
