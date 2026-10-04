@@ -13,7 +13,7 @@ SkillSwap builds an end-to-end, money-free community skill-exchange platform whe
 - [x] **Phase 6: Exchange Request Lifecycle** - Implement request creation, balance checks, provider accept/reject actions, and request cancellation.
 - [x] **Phase 7: Booking & Service Scheduling** - Implement scheduling workflow for date, time, and duration coordination with calendar views.
 - [x] **Phase 8: Service Completion & Dual Confirmation Workflow** - Implement two-party completion verification, dispute initiation, and state transitions to COMPLETED.
-- [ ] **Phase 9: Atomic Time-Credit Ledger & Wallet Settlement** - Implement ACID server-side credit transfer (1 hr = 1 credit), immutable audit transactions, and wallet history.
+- [x] **Phase 9: Atomic Time-Credit Ledger & Wallet Settlement** - Implement ACID server-side credit transfer (1 hr = 1 credit), immutable audit transactions, and wallet history.
 - [ ] **Phase 10: Trust & Reputation (Reviews & Ratings)** - Implement verified post-exchange review and rating submissions with aggregate reputation updates.
 - [ ] **Phase 11: In-App Notifications, Dashboard & End-to-End Polish** - Wire in-app notifications, finalize unified Member Dashboard, and ensure responsive polish across all 9 pages.
 
@@ -153,8 +153,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 09-01: Backend transactional settlement service with `@Transactional` ACID transfer, ledger audit records, and idempotency guards.
-- [ ] 09-02: Frontend Time-Credit Wallet page with balance cards, earnings/spending stats, and filterable ledger table.
+- [x] 09-01: Backend transactional settlement service with `@Transactional` ACID transfer, ledger audit records, and idempotency guards.
+- [x] 09-02: Frontend Time-Credit Wallet page with balance cards, earnings/spending stats, and filterable ledger table.
 
 ### Phase 10: Trust & Reputation (Reviews & Ratings)
 **Goal**: Enable verified members to leave ratings (1–5 stars) and reviews following completed exchanges to build community trust.
@@ -201,6 +201,6 @@ Phases execute in numeric order: 1 ➔ 2 ➔ 3 ➔ 4 ➔ 5 ➔ 6 ➔ 7 ➔ 8 ➔
 | 6. Exchange Request Lifecycle | 2/2 | Complete | 2026-10-04 |
 | 7. Booking & Service Scheduling | 2/2 | Complete | 2026-10-04 |
 | 8. Service Completion & Dual Confirmation Workflow | 1/1 | Complete | 2026-10-04 |
-| 9. Atomic Time-Credit Ledger & Wallet Settlement | 0/2 | Not started | - |
+| 9. Atomic Time-Credit Ledger & Wallet Settlement | 2/2 | Complete | 2026-10-04 |
 | 10. Trust & Reputation (Reviews & Ratings) | 0/2 | Not started | - |
 | 11. In-App Notifications, Dashboard & End-to-End Polish | 0/2 | Not started | - |

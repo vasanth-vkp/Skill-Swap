@@ -13,6 +13,7 @@ import com.skillswap.platform.user.entity.User;
 import com.skillswap.platform.user.repository.UserRepository;
 import com.skillswap.platform.wallet.entity.Wallet;
 import com.skillswap.platform.wallet.repository.WalletRepository;
+import com.skillswap.platform.wallet.service.WalletService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,9 @@ class ExchangeServiceTest {
 
     @Mock
     private com.skillswap.platform.booking.repository.BookingRepository bookingRepository;
+
+    @Mock
+    private WalletService walletService;
 
     @InjectMocks
     private ExchangeService exchangeService;
@@ -263,6 +267,7 @@ class ExchangeServiceTest {
         assertThat(result.getStatus()).isEqualTo(ExchangeStatus.COMPLETED);
         assertThat(booking.getStatus()).isEqualTo(com.skillswap.platform.booking.entity.BookingStatus.COMPLETED);
         verify(bookingRepository, times(1)).save(booking);
+        verify(walletService, times(1)).settleExchange(exchange);
     }
 
     @Test

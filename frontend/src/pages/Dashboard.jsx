@@ -134,9 +134,18 @@ export default function Dashboard() {
                 Initial grant of 5 credits active. Server-verified balance.
               </p>
             </div>
-            <div className="mt-4 pt-4 border-t border-stone-100 flex items-center gap-1.5 text-xs text-emerald-700 font-medium">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>Ledger balance verified</span>
+            <div className="mt-4 pt-4 border-t border-stone-100 flex items-center justify-between text-xs font-medium">
+              <div className="flex items-center gap-1.5 text-emerald-700">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Ledger verified</span>
+              </div>
+              <Link
+                to="/wallet"
+                className="text-amber-600 hover:text-amber-700 font-bold inline-flex items-center gap-1 hover:underline"
+              >
+                <span>View Wallet</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
 

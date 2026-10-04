@@ -54,6 +54,9 @@ class BookingControllerTest {
     private WalletRepository walletRepository;
 
     @Autowired
+    private com.skillswap.platform.wallet.repository.CreditTransactionRepository creditTransactionRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -99,6 +102,7 @@ class BookingControllerTest {
     }
 
     private void cleanDb() {
+        creditTransactionRepository.deleteAll();
         bookingRepository.deleteAll();
         exchangeRequestRepository.deleteAll();
         userSkillRepository.deleteAll();

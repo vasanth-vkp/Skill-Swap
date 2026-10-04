@@ -2,18 +2,18 @@
 gsd_state_version: "1.0"
 current_phase: 9
 current_phase_name: Atomic Time-Credit Ledger & Wallet Settlement
-status: ready_to_execute
-stopped_at: Phase 9 planned (09-01 and 09-02 plans ready)
-last_updated: "2026-10-04T12:40:00.000Z"
+status: completed
+stopped_at: Phase 9 executed, tested, and verified (90 backend tests + 82 frontend tests passed)
+last_updated: "2026-10-04T12:55:00.000Z"
 last_activity: 2026-10-04
-last_activity_desc: Phase 9 planned with CONTEXT.md, RESEARCH.md, VALIDATION.md, 09-01-PLAN.md, and 09-02-PLAN.md
-state_head: 1840ba0
+last_activity_desc: Phase 9 executed with 90 backend + 82 frontend passing tests, full Nyquist validation, and clean Vite build
+state_head: a1c4795
 progress:
   total_phases: 11
-  completed_phases: 8
+  completed_phases: 9
   total_plans: 17
-  completed_plans: 15
-  percent: 73
+  completed_plans: 17
+  percent: 82
 ---
 
 # Project State
@@ -23,24 +23,24 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-04)
 
 **Core value:** One complete skill exchange works reliably from discovery, request, and scheduling to two-party service completion and atomic time-credit ledger settlement.
-**Current focus:** Phase 8: Service Completion & Dual Confirmation Workflow (Complete) ➔ Next: Phase 9 (Atomic Time-Credit Ledger & Wallet Settlement)
+**Current focus:** Phase 9: Atomic Time-Credit Ledger & Wallet Settlement (Complete) ➔ Next: Phase 10 (Trust & Reputation: Reviews & Ratings)
 
 ## Current Position
 
-Phase: 8 of 11 (Service Completion & Dual Confirmation Workflow)
-Plan: 1 of 1 in current phase (Complete)
+Phase: 9 of 11 (Atomic Time-Credit Ledger & Wallet Settlement)
+Plan: 2 of 2 in current phase (Complete)
 Status: Completed & Verified
-Last activity: 2026-10-04 — Phase 8 executed with 80 backend + 76 frontend passing tests
+Last activity: 2026-10-04 — Phase 9 executed with 90 backend + 82 frontend passing tests
 Branch: master
 
-Progress: [████████░░] 73%
+Progress: [████████░░] 82%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
+- Total plans completed: 17
 - Average duration: ~15 min
-- Total execution time: 3.75 hours
+- Total execution time: 4.25 hours
 
 **By Phase:**
 
@@ -54,9 +54,10 @@ Progress: [████████░░] 73%
 | 6. Exchange Request Lifecycle | 2/2 | 30m | 15m | Complete |
 | 7. Booking & Service Scheduling | 2/2 | 30m | 15m | Complete |
 | 8. Service Completion & Dual Confirmation Workflow | 1/1 | 15m | 15m | Complete |
+| 9. Atomic Time-Credit Ledger & Wallet Settlement | 2/2 | 30m | 15m | Complete |
 
 **Recent Trend:**
-- Last 15 plans: 01-01, 01-02, 02-01, 02-02, 03-01, 03-02, 04-01, 04-02, 05-01, 05-02, 06-01, 06-02, 07-01, 07-02, 08-01
+- Last 17 plans: 01-01, 01-02, 02-01, 02-02, 03-01, 03-02, 04-01, 04-02, 05-01, 05-02, 06-01, 06-02, 07-01, 07-02, 08-01, 09-01, 09-02
 - Trend: Stable
 
 ## Accumulated Context
@@ -101,6 +102,11 @@ Decisions are logged in PROJECT.md Key Decisions table and phase CONTEXT.md file
 - [D-802]: Dispute reporting endpoint accepts structured reason, transitions status immediately to `DISPUTED`, and cancels active booking.
 - [D-803]: Authorization guards: only participants can confirm completion or dispute; already completed or cancelled exchanges cannot be confirmed or disputed.
 - [D-804]: Responsive UI with reciprocal verification prompt ("Partner Confirmed — Verify Completion"), awaiting partner badge, and dispute modal.
+- [D-901]: Atomic ACID settlement triggered within the existing @Transactional boundary of `ExchangeService.confirmCompletion` upon dual confirmation.
+- [D-902]: Immutable audit ledger via `credit_transactions` table recording all transfers (`EXCHANGE_TRANSFER`) and initial grants (`INITIAL_GRANT`).
+- [D-903]: Idempotency guard via `existsByExchangeId` and non-negative balance protection via Java pre-check and DB constraint `chk_wallet_balance_positive`.
+- [D-904]: Authenticated endpoints `/api/v1/wallet/me` and `/api/v1/wallet/transactions` filtering strictly by authenticated user principal.
+- [D-905]: Responsive `/wallet` page with live balance hero card, earned/spent stats, search filter, and tabbed transaction ledger.
 
 ### Blockers/Concerns
 
@@ -108,8 +114,8 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-10-04T12:35:00.000Z
-Stopped at: Phase 8 executed, tested, and verified
-Resume file: .planning/phases/08-service-completion-dual-confirmation-workflow/08-VERIFICATION.md
+Last session: 2026-10-04T12:55:00.000Z
+Stopped at: Phase 9 executed, tested, and verified
+Resume file: .planning/phases/09-atomic-time-credit-ledger-wallet-settlement/09-VERIFICATION.md
 
 

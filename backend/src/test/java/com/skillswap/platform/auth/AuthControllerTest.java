@@ -36,8 +36,12 @@ class AuthControllerTest {
     @Autowired
     private WalletRepository walletRepository;
 
+    @Autowired
+    private com.skillswap.platform.wallet.repository.CreditTransactionRepository creditTransactionRepository;
+
     @BeforeEach
     void cleanUp() {
+        creditTransactionRepository.deleteAll();
         walletRepository.deleteAll();
         userRepository.deleteAll();
     }

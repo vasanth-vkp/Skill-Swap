@@ -34,6 +34,9 @@ class DiscoveryControllerTest {
     private WalletRepository walletRepository;
 
     @Autowired
+    private com.skillswap.platform.wallet.repository.CreditTransactionRepository creditTransactionRepository;
+
+    @Autowired
     private SkillRepository skillRepository;
 
     @Autowired
@@ -46,6 +49,7 @@ class DiscoveryControllerTest {
 
     @BeforeEach
     void setUp() {
+        creditTransactionRepository.deleteAll();
         userSkillRepository.deleteAll();
         walletRepository.deleteAll();
         userRepository.deleteAll();

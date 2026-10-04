@@ -9,6 +9,7 @@ import com.skillswap.platform.user.entity.User;
 import com.skillswap.platform.user.repository.UserRepository;
 import com.skillswap.platform.wallet.entity.Wallet;
 import com.skillswap.platform.wallet.repository.WalletRepository;
+import com.skillswap.platform.wallet.service.WalletService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,17 +23,20 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
+    private final WalletService walletService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
     public AuthService(
             UserRepository userRepository,
             WalletRepository walletRepository,
+            WalletService walletService,
             PasswordEncoder passwordEncoder,
             JwtService jwtService
     ) {
         this.userRepository = userRepository;
         this.walletRepository = walletRepository;
+        this.walletService = walletService;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
     }
@@ -54,6 +58,9 @@ public class AuthService {
         // Economic Invariant (WALL-01 / AUTH-02): New users receive exactly 5 time credits atomically
         Wallet wallet = new Wallet(user.getId(), new BigDecimal("5.00"));
         wallet = walletRepository.save(wallet);
+
+        // Record initial grant transaction in immutable audit ledger (WALL-03)
+        walletService.recordInitialGrant(user, wallet.getBalance());
 
         String token = jwtService.generateToken(user);
 

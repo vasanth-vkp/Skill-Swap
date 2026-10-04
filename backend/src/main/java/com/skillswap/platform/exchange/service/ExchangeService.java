@@ -14,6 +14,7 @@ import com.skillswap.platform.user.entity.User;
 import com.skillswap.platform.user.repository.UserRepository;
 import com.skillswap.platform.wallet.entity.Wallet;
 import com.skillswap.platform.wallet.repository.WalletRepository;
+import com.skillswap.platform.wallet.service.WalletService;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,7 @@ public class ExchangeService {
     private final UserSkillRepository userSkillRepository;
     private final WalletRepository walletRepository;
     private final BookingRepository bookingRepository;
+    private final WalletService walletService;
 
     public ExchangeService(
             ExchangeRequestRepository exchangeRequestRepository,
@@ -41,7 +43,8 @@ public class ExchangeService {
             SkillRepository skillRepository,
             UserSkillRepository userSkillRepository,
             WalletRepository walletRepository,
-            BookingRepository bookingRepository
+            BookingRepository bookingRepository,
+            WalletService walletService
     ) {
         this.exchangeRequestRepository = exchangeRequestRepository;
         this.userRepository = userRepository;
@@ -49,6 +52,7 @@ public class ExchangeService {
         this.userSkillRepository = userSkillRepository;
         this.walletRepository = walletRepository;
         this.bookingRepository = bookingRepository;
+        this.walletService = walletService;
     }
 
     public ExchangeDto createExchangeRequest(Long requesterId, CreateExchangeRequest request) {
@@ -209,6 +213,7 @@ public class ExchangeService {
                         booking.setStatus(BookingStatus.COMPLETED);
                         bookingRepository.save(booking);
                     });
+            walletService.settleExchange(exchange);
         }
 
         ExchangeRequest updated = exchangeRequestRepository.save(exchange);

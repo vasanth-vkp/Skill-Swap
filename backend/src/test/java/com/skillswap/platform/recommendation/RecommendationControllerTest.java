@@ -40,6 +40,9 @@ class RecommendationControllerTest {
     private WalletRepository walletRepository;
 
     @Autowired
+    private com.skillswap.platform.wallet.repository.CreditTransactionRepository creditTransactionRepository;
+
+    @Autowired
     private SkillRepository skillRepository;
 
     @Autowired
@@ -56,6 +59,7 @@ class RecommendationControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
+        creditTransactionRepository.deleteAll();
         userSkillRepository.deleteAll();
         walletRepository.deleteAll();
         userRepository.deleteAll();

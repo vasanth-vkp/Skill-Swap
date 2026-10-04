@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, Sparkles, Menu, X, ArrowRight, User, LayoutDashboard, ArrowLeftRight } from 'lucide-react';
+import { Clock, Sparkles, Menu, X, ArrowRight, User, LayoutDashboard, ArrowLeftRight, Wallet } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function Navbar() {
@@ -49,11 +49,24 @@ export default function Navbar() {
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
                 {/* Wallet Balance Pill */}
-                <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200/80 text-amber-900 shadow-sm text-xs font-bold">
-                  <Clock className="w-3.5 h-3.5 text-amber-600" />
+                <Link
+                  to="/wallet"
+                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 text-amber-900 shadow-sm text-xs font-bold transition-all group cursor-pointer"
+                  title="View Time-Credit Wallet & Transaction History"
+                >
+                  <Clock className="w-3.5 h-3.5 text-amber-600 group-hover:scale-110 transition-transform" />
                   <span>{walletBalance !== undefined && walletBalance !== null ? Number(walletBalance).toFixed(1) : '5.0'}</span>
                   <span className="text-amber-700 font-medium">Credits</span>
-                </div>
+                </Link>
+
+                {/* Wallet Link */}
+                <Link
+                  to="/wallet"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-700 hover:text-amber-600 px-3 py-2 rounded-xl hover:bg-stone-100 transition"
+                >
+                  <Wallet className="w-4 h-4 text-stone-500" />
+                  <span>Wallet</span>
+                </Link>
 
                 {/* Exchanges Link */}
                 <Link
@@ -133,14 +146,24 @@ export default function Navbar() {
           </Link>
           <div className="pt-3 border-t border-stone-200 flex flex-col gap-2">
             {isAuthenticated ? (
-              <Link
-                to="/dashboard"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-center font-bold text-white bg-amber-600 py-2.5 rounded-2xl shadow-warm flex items-center justify-center gap-2"
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                Go to Dashboard
-              </Link>
+              <>
+                <Link
+                  to="/wallet"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center font-bold text-amber-900 bg-amber-50 border border-amber-200/80 py-2.5 rounded-2xl flex items-center justify-center gap-2"
+                >
+                  <Wallet className="w-4 h-4 text-amber-600" />
+                  <span>Wallet ({walletBalance !== undefined && walletBalance !== null ? Number(walletBalance).toFixed(1) : '5.0'} Credits)</span>
+                </Link>
+                <Link
+                  to="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center font-bold text-white bg-amber-600 py-2.5 rounded-2xl shadow-warm flex items-center justify-center gap-2"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  Go to Dashboard
+                </Link>
+              </>
             ) : (
               <>
                 <Link

@@ -47,6 +47,9 @@ class ExchangeControllerTest {
     private WalletRepository walletRepository;
 
     @Autowired
+    private com.skillswap.platform.wallet.repository.CreditTransactionRepository creditTransactionRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -66,6 +69,7 @@ class ExchangeControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
+        creditTransactionRepository.deleteAll();
         exchangeRequestRepository.deleteAll();
         userSkillRepository.deleteAll();
         walletRepository.deleteAll();
@@ -95,6 +99,7 @@ class ExchangeControllerTest {
 
     @org.junit.jupiter.api.AfterEach
     void tearDown() {
+        creditTransactionRepository.deleteAll();
         exchangeRequestRepository.deleteAll();
         userSkillRepository.deleteAll();
         walletRepository.deleteAll();
