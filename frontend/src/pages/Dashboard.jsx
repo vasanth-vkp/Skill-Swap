@@ -1,11 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Clock, Sparkles, PlusCircle, Search, ArrowRight, LogOut, ShieldCheck, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import recommendationService from '../services/recommendationService';
+import RecommendationCard from '../components/dashboard/RecommendationCard';
 
 export default function Dashboard() {
   const { user, walletBalance, logout } = useAuth();
   const navigate = useNavigate();
+
+  const [recommendations, setRecommendations] = useState([]);
+  const [loadingRecs, setLoadingRecs] = useState(true);
+  const [recsError, setRecsError] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchRecommendations = async () => {
+      try {
+        setLoadingRecs(true);
+        const data = await recommendationService.getRecommendations();
+        if (isMounted) {
+          setRecommendations(Array.isArray(data) ? data : []);
+          setRecsError(null);
+        }
+      } catch (err) {
+        if (isMounted) {
+          console.error('Failed to load recommendations:', err);
+          setRecsError('Unable to load recommendations at this time.');
+        }
+      } finally {
+        if (isMounted) {
+          setLoadingRecs(false);
+        }
+      }
+    };
+
+    fetchRecommendations();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -155,6 +189,98 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
+
+        {/* Recommended Matches For You */}
+        <section className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100/70 text-amber-900 text-xs font-semibold mb-1">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                <span>Smart Matching</span>
+              </div>
+              <h2 className="text-xl font-bold text-stone-900 font-display">
+                Recommended Matches For You
+              </h2>
+              <p className="text-xs text-stone-500">
+                Personalized matches based on your wanted skills, location, rating, and exchange reciprocity.
+              </p>
+            </div>
+            <Link
+              to="/explore"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-amber-600 hover:text-amber-700 transition"
+            >
+              <span>Explore All Skills</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* Recommendations Content */}
+          {loadingRecs ? (
+            <div data-testid="recommendations-loading" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-sm animate-pulse flex flex-col justify-between h-72"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="h-6 w-24 bg-stone-200 rounded-full" />
+                      <div className="h-6 w-12 bg-stone-200 rounded-full" />
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-stone-200" />
+                      <div className="space-y-2 flex-1">
+                        <div className="h-4 w-3/4 bg-stone-200 rounded" />
+                        <div className="h-3 w-1/2 bg-stone-200 rounded" />
+                      </div>
+                    </div>
+                    <div className="h-16 bg-stone-100 rounded-2xl" />
+                  </div>
+                  <div className="h-10 bg-stone-200 rounded-xl" />
+                </div>
+              ))}
+            </div>
+          ) : recommendations.length > 0 ? (
+            <div data-testid="recommendations-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recommendations.map((rec) => (
+                <RecommendationCard
+                  key={`${rec.providerId}-${rec.matchedSkillName}`}
+                  recommendation={rec}
+                />
+              ))}
+            </div>
+          ) : (
+            <div
+              data-testid="recommendations-empty"
+              className="bg-white rounded-3xl p-8 border border-dashed border-stone-300 text-center max-w-xl mx-auto shadow-sm"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
+                <Sparkles className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-stone-900 mb-1">
+                No matches found yet
+              </h3>
+              <p className="text-xs text-stone-500 leading-relaxed mb-5">
+                Add skills you want to learn to your profile so our recommendation engine can pair you with compatible community providers.
+              </p>
+              <div className="flex items-center justify-center gap-3">
+                <Link
+                  to="/profile"
+                  className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold transition shadow-sm"
+                >
+                  <span>Add Wanted Skills</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  to="/explore"
+                  className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold transition"
+                >
+                  <span>Browse Catalog</span>
+                </Link>
+              </div>
+            </div>
+          )}
+        </section>
 
         {/* Profile Details Mini-Card */}
         <div className="bg-white rounded-2xl p-6 border border-stone-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
