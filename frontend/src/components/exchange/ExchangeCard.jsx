@@ -13,6 +13,9 @@ import {
   X,
   Trash2,
   CalendarPlus,
+  AlertTriangle,
+  ShieldAlert,
+  CheckCheck,
 } from 'lucide-react';
 
 const STATUS_CONFIG = {
@@ -46,6 +49,11 @@ const STATUS_CONFIG = {
     style: 'bg-teal-50 text-teal-800 border-teal-200',
     icon: Award,
   },
+  DISPUTED: {
+    label: 'Disputed',
+    style: 'bg-rose-50 text-rose-800 border-rose-300',
+    icon: AlertTriangle,
+  },
 };
 
 const CATEGORY_COLORS = {
@@ -64,11 +72,16 @@ export default function ExchangeCard({
   onReject,
   onCancel,
   onSchedule,
+  onConfirmCompletion,
+  onDispute,
 }) {
   const [imageError, setImageError] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
 
   if (!exchange) return null;
+
+  const userConfirmed = isIncoming ? Boolean(exchange.providerConfirmed) : Boolean(exchange.requesterConfirmed);
+  const partnerConfirmed = isIncoming ? Boolean(exchange.requesterConfirmed) : Boolean(exchange.providerConfirmed);
 
   const counterpartyName = isIncoming ? exchange.requesterName : exchange.providerName;
   const counterpartyId = isIncoming ? exchange.requesterId : exchange.providerId;
@@ -243,19 +256,137 @@ export default function ExchangeCard({
           </button>
         )}
 
-        {exchange.status !== 'PENDING' && exchange.status !== 'ACCEPTED' && (
-          <div className="text-center py-1">
-            <span className="text-[11px] text-stone-400 font-medium">
-              {`Exchange ${statusConfig.label.toLowerCase()}`}
-            </span>
-          </div>
-        )}
-
         {exchange.status === 'ACCEPTED' && !onSchedule && (
           <div className="text-center py-1">
             <span className="text-[11px] text-stone-400 font-medium">Accepted — awaiting scheduling</span>
           </div>
         )}
+
+        {exchange.status === 'SCHEDULED' && (
+          <div className="space-y-2">
+            {!userConfirmed && !partnerConfirmed && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => handleAction(onConfirmCompletion)}
+                  disabled={actionLoading}
+                  data-testid="confirm-completion-btn"
+                  className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition disabled:opacity-50 cursor-pointer"
+                >
+                  <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <span>Confirm Service Completed</span>
+                </button>
+                {onDispute && (
+                  <button
+                    type="button"
+                    onClick={() => onDispute(exchange)}
+                    disabled={actionLoading}
+                    data-testid="open-dispute-btn"
+                    className="w-full inline-flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl border border-stone-200 hover:border-rose-300 hover:bg-rose-50/60 text-stone-600 hover:text-rose-700 text-xs font-semibold transition cursor-pointer"
+                  >
+                    <ShieldAlert className="w-3.5 h-3.5 text-rose-500" />
+                    <span>Report Issue / Dispute</span>
+                  </button>
+                )}
+              </>
+            )}
+
+            {userConfirmed && !partnerConfirmed && (
+              <>
+                <div
+                  data-testid="awaiting-partner-confirmation"
+                  className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200/80 flex items-center justify-between text-xs text-amber-900"
+                >
+                  <span className="flex items-center gap-2 font-semibold">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </span>
+                    Awaiting Partner Confirmation
+                  </span>
+                  <span className="text-[11px] text-amber-700 font-medium">Verified by you</span>
+                </div>
+                {onDispute && (
+                  <button
+                    type="button"
+                    onClick={() => onDispute(exchange)}
+                    disabled={actionLoading}
+                    data-testid="open-dispute-btn"
+                    className="w-full inline-flex items-center justify-center gap-1 text-[11px] font-semibold text-stone-500 hover:text-rose-600 transition cursor-pointer py-1"
+                  >
+                    <span>Having issues? Report dispute</span>
+                  </button>
+                )}
+              </>
+            )}
+
+            {!userConfirmed && partnerConfirmed && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => handleAction(onConfirmCompletion)}
+                  disabled={actionLoading}
+                  data-testid="partner-confirmed-verify-btn"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md ring-2 ring-emerald-500/40 ring-offset-1 transition disabled:opacity-50 cursor-pointer"
+                >
+                  <CheckCheck className="w-4 h-4 stroke-[2.5]" />
+                  <span>Partner Confirmed — Verify Completion</span>
+                </button>
+                {onDispute && (
+                  <button
+                    type="button"
+                    onClick={() => onDispute(exchange)}
+                    disabled={actionLoading}
+                    data-testid="open-dispute-btn"
+                    className="w-full inline-flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl border border-stone-200 hover:border-rose-300 hover:bg-rose-50/60 text-stone-600 hover:text-rose-700 text-xs font-semibold transition cursor-pointer"
+                  >
+                    <ShieldAlert className="w-3.5 h-3.5 text-rose-500" />
+                    <span>Report Issue / Dispute</span>
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        {exchange.status === 'COMPLETED' && (
+          <div
+            data-testid="exchange-completed-notice"
+            className="p-2.5 rounded-xl bg-teal-50 border border-teal-200 text-xs text-teal-900 font-semibold flex items-center justify-center gap-1.5"
+          >
+            <CheckCheck className="w-4 h-4 text-teal-600" />
+            <span>Service Verified & Completed</span>
+          </div>
+        )}
+
+        {exchange.status === 'DISPUTED' && (
+          <div
+            data-testid="exchange-disputed-notice"
+            className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-900 space-y-1"
+          >
+            <div className="flex items-center gap-1.5 font-bold text-rose-800">
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-600 flex-shrink-0" />
+              <span>Exchange Disputed</span>
+            </div>
+            {exchange.disputeReason && (
+              <p className="text-[11px] text-rose-700 line-clamp-2 italic">
+                &ldquo;{exchange.disputeReason}&rdquo;
+              </p>
+            )}
+          </div>
+        )}
+
+        {exchange.status !== 'PENDING' &&
+          exchange.status !== 'ACCEPTED' &&
+          exchange.status !== 'SCHEDULED' &&
+          exchange.status !== 'COMPLETED' &&
+          exchange.status !== 'DISPUTED' && (
+            <div className="text-center py-1">
+              <span className="text-[11px] text-stone-400 font-medium">
+                {`Exchange ${statusConfig.label.toLowerCase()}`}
+              </span>
+            </div>
+          )}
       </div>
     </div>
   );

@@ -159,4 +159,152 @@ describe('ExchangeCard', () => {
     fireEvent.click(scheduleBtn);
     expect(onSchedule).toHaveBeenCalledWith(acceptedExchange);
   });
+
+  it('triggers onConfirmCompletion when confirm button is clicked on SCHEDULED exchange', async () => {
+    const scheduledExchange = {
+      ...mockExchange,
+      status: 'SCHEDULED',
+      providerConfirmed: false,
+      requesterConfirmed: false,
+    };
+    const onConfirmCompletion = vi.fn().mockResolvedValueOnce();
+
+    render(
+      <BrowserRouter>
+        <ExchangeCard
+          exchange={scheduledExchange}
+          isIncoming={true}
+          onConfirmCompletion={onConfirmCompletion}
+          onDispute={vi.fn()}
+        />
+      </BrowserRouter>
+    );
+
+    const completeBtn = screen.getByTestId('confirm-completion-btn');
+    expect(completeBtn).toBeInTheDocument();
+    fireEvent.click(completeBtn);
+
+    await waitFor(() => {
+      expect(onConfirmCompletion).toHaveBeenCalledWith(10);
+    });
+  });
+
+  it('triggers onDispute when dispute button is clicked on SCHEDULED exchange', () => {
+    const scheduledExchange = {
+      ...mockExchange,
+      status: 'SCHEDULED',
+      providerConfirmed: false,
+      requesterConfirmed: false,
+    };
+    const onDispute = vi.fn();
+
+    render(
+      <BrowserRouter>
+        <ExchangeCard
+          exchange={scheduledExchange}
+          isIncoming={true}
+          onConfirmCompletion={vi.fn()}
+          onDispute={onDispute}
+        />
+      </BrowserRouter>
+    );
+
+    const disputeBtn = screen.getByTestId('open-dispute-btn');
+    expect(disputeBtn).toBeInTheDocument();
+    fireEvent.click(disputeBtn);
+    expect(onDispute).toHaveBeenCalledWith(scheduledExchange);
+  });
+
+  it('renders awaiting partner confirmation when user has confirmed', () => {
+    const scheduledExchange = {
+      ...mockExchange,
+      status: 'SCHEDULED',
+      providerConfirmed: true, // user is provider (isIncoming=true)
+      requesterConfirmed: false,
+    };
+
+    render(
+      <BrowserRouter>
+        <ExchangeCard
+          exchange={scheduledExchange}
+          isIncoming={true}
+          onConfirmCompletion={vi.fn()}
+          onDispute={vi.fn()}
+        />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByTestId('awaiting-partner-confirmation')).toBeInTheDocument();
+    expect(screen.getByText(/awaiting partner confirmation/i)).toBeInTheDocument();
+    expect(screen.queryByTestId('confirm-completion-btn')).not.toBeInTheDocument();
+  });
+
+  it('renders highlighted reciprocal verify CTA when partner has confirmed', () => {
+    const scheduledExchange = {
+      ...mockExchange,
+      status: 'SCHEDULED',
+      providerConfirmed: false, // user is provider (isIncoming=true)
+      requesterConfirmed: true, // partner confirmed
+    };
+    const onConfirmCompletion = vi.fn();
+
+    render(
+      <BrowserRouter>
+        <ExchangeCard
+          exchange={scheduledExchange}
+          isIncoming={true}
+          onConfirmCompletion={onConfirmCompletion}
+          onDispute={vi.fn()}
+        />
+      </BrowserRouter>
+    );
+
+    const verifyBtn = screen.getByTestId('partner-confirmed-verify-btn');
+    expect(verifyBtn).toBeInTheDocument();
+    expect(screen.getByText(/partner confirmed — verify completion/i)).toBeInTheDocument();
+
+    fireEvent.click(verifyBtn);
+    expect(onConfirmCompletion).toHaveBeenCalledWith(10);
+  });
+
+  it('renders completed notice when status is COMPLETED', () => {
+    const completedExchange = {
+      ...mockExchange,
+      status: 'COMPLETED',
+      providerConfirmed: true,
+      requesterConfirmed: true,
+    };
+
+    render(
+      <BrowserRouter>
+        <ExchangeCard
+          exchange={completedExchange}
+          isIncoming={false}
+        />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByTestId('exchange-completed-notice')).toBeInTheDocument();
+    expect(screen.getByText(/service verified & completed/i)).toBeInTheDocument();
+  });
+
+  it('renders disputed notice with reason when status is DISPUTED', () => {
+    const disputedExchange = {
+      ...mockExchange,
+      status: 'DISPUTED',
+      disputeReason: 'Partner was 45 minutes late and skipped topics',
+    };
+
+    render(
+      <BrowserRouter>
+        <ExchangeCard
+          exchange={disputedExchange}
+          isIncoming={false}
+        />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByTestId('exchange-disputed-notice')).toBeInTheDocument();
+    expect(screen.getByText(/partner was 45 minutes late and skipped topics/i)).toBeInTheDocument();
+  });
 });

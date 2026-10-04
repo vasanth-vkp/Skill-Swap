@@ -12,11 +12,15 @@ import {
 import exchangeService from '../services/exchangeService';
 import ExchangeCard from '../components/exchange/ExchangeCard';
 import ScheduleBookingModal from '../components/booking/ScheduleBookingModal';
+import DisputeExchangeModal from '../components/exchange/DisputeExchangeModal';
 
 const STATUS_FILTERS = [
   { id: 'ALL', label: 'All' },
   { id: 'PENDING', label: 'Pending' },
   { id: 'ACCEPTED', label: 'Accepted' },
+  { id: 'SCHEDULED', label: 'Scheduled' },
+  { id: 'COMPLETED', label: 'Completed' },
+  { id: 'DISPUTED', label: 'Disputed' },
   { id: 'REJECTED', label: 'Declined' },
   { id: 'CANCELLED', label: 'Cancelled' },
 ];
@@ -28,6 +32,7 @@ export default function Exchanges() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [schedulingExchange, setSchedulingExchange] = useState(null);
+  const [disputingExchange, setDisputingExchange] = useState(null);
 
   const fetchExchanges = useCallback(async () => {
     try {
@@ -85,6 +90,21 @@ export default function Exchanges() {
   const handleScheduleClose = () => {
     setSchedulingExchange(null);
     fetchExchanges(); // refresh to show new SCHEDULED status
+  };
+
+  const handleConfirmCompletion = async (id) => {
+    try {
+      await exchangeService.confirmCompletion(id);
+      fetchExchanges();
+    } catch (err) {
+      alert(err.response?.data?.error || 'Failed to confirm completion.');
+    }
+  };
+
+  const handleDisputeOpen = (exchange) => setDisputingExchange(exchange);
+  const handleDisputeClose = () => {
+    setDisputingExchange(null);
+    fetchExchanges();
   };
 
   const pendingCount = exchanges.filter((e) => e.status === 'PENDING').length;
@@ -243,6 +263,8 @@ export default function Exchanges() {
                 onReject={handleReject}
                 onCancel={handleCancel}
                 onSchedule={handleScheduleOpen}
+                onConfirmCompletion={handleConfirmCompletion}
+                onDispute={handleDisputeOpen}
               />
             ))}
           </div>
@@ -293,6 +315,15 @@ export default function Exchanges() {
           exchange={schedulingExchange}
           onClose={() => setSchedulingExchange(null)}
           onSuccess={handleScheduleClose}
+        />
+      )}
+
+      {disputingExchange && (
+        <DisputeExchangeModal
+          isOpen={Boolean(disputingExchange)}
+          exchange={disputingExchange}
+          onClose={() => setDisputingExchange(null)}
+          onSuccess={handleDisputeClose}
         />
       )}
     </div>

@@ -78,6 +78,24 @@ export const exchangeService = {
     const response = await api.put(`/exchanges/${id}/cancel`);
     return response.data;
   },
+
+  /**
+   * Participant confirms service delivery completion.
+   * POST /api/v1/exchanges/{id}/complete
+   */
+  confirmCompletion: async (id) => {
+    const response = await api.post(`/exchanges/${id}/complete`);
+    return response.data;
+  },
+
+  /**
+   * Participant disputes an exchange request.
+   * POST /api/v1/exchanges/{id}/dispute
+   */
+  disputeExchange: async (id, { reason }) => {
+    const response = await api.post(`/exchanges/${id}/dispute`, { reason });
+    return response.data;
+  },
 };
 
 export default exchangeService;
