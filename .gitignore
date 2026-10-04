@@ -1,0 +1,15 @@
+# Maven
+backend/target/
+backend/.mvn/
+backend/*.iml
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# IDE & OS
+.idea/
+*.log
+.DS_Store
+Thumbs.db
