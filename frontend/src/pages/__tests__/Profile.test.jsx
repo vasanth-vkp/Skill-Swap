@@ -150,7 +150,7 @@ describe('Profile Views', () => {
         expect(screen.getByText(/Frontend developer and language learner/i)).toBeInTheDocument();
         expect(screen.getByText('Web Development')).toBeInTheDocument();
         expect(screen.getByText('Spanish Conversation')).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: /Request Skill Exchange/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Request Skill Exchange/i })).toBeInTheDocument();
       });
     });
   });
