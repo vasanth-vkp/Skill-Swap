@@ -10,7 +10,7 @@ SkillSwap builds an end-to-end, money-free community skill-exchange platform whe
 - [x] **Phase 3: Member Profiles & Skill Catalog Management** - Build user profile management, categorized skills catalog, and offered/wanted skills tracking.
 - [x] **Phase 4: Skill Discovery & Search Experience** - Implement multi-filter search (category, location, rating) and provider cards on the Explore Skills page.
 - [x] **Phase 5: Matching & Recommendation Engine** - Build weighted compatibility scoring (`0.4*Skill + 0.2*Location + 0.15*Availability + 0.15*Rating + 0.1*Experience`) with AI semantic matching for complementary needs.
-- [ ] **Phase 6: Exchange Request Lifecycle** - Implement request creation, balance checks, provider accept/reject actions, and request cancellation.
+- [x] **Phase 6: Exchange Request Lifecycle** - Implement request creation, balance checks, provider accept/reject actions, and request cancellation.
 - [ ] **Phase 7: Booking & Service Scheduling** - Implement scheduling workflow for date, time, and duration coordination with calendar views.
 - [ ] **Phase 8: Service Completion & Dual Confirmation Workflow** - Implement two-party completion verification, dispute initiation, and state transitions to COMPLETED.
 - [ ] **Phase 9: Atomic Time-Credit Ledger & Wallet Settlement** - Implement ACID server-side credit transfer (1 hr = 1 credit), immutable audit transactions, and wallet history.
@@ -108,8 +108,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: Backend exchange request entity, state transition validation, and REST controller endpoints.
-- [ ] 06-02: Frontend Exchange Management page with incoming/outgoing request lists, modals, and actions.
+- [x] 06-01: Backend exchange request entity, state transition validation, and REST controller endpoints.
+- [x] 06-02: Frontend Exchange Management page with incoming/outgoing request lists, modals, and actions.
 
 ### Phase 7: Booking & Service Scheduling
 **Goal**: Enable participants of accepted exchanges to agree upon and schedule a date, start time, and duration.

@@ -1,19 +1,19 @@
 ---
 gsd_state_version: "1.0"
-current_phase: 5
-current_phase_name: Matching & Recommendation Engine
+current_phase: 6
+current_phase_name: Exchange Request Lifecycle
 status: completed
-stopped_at: Phase 5 executed, tested, and verified (37 backend tests + 35 frontend tests passed)
-last_updated: "2026-10-04T08:41:00.000Z"
+stopped_at: Phase 6 executed, tested, and verified (55 backend tests + 50 frontend tests passed)
+last_updated: "2026-10-04T09:10:00.000Z"
 last_activity: 2026-10-04
-last_activity_desc: Phase 5 executed with 37 backend + 35 frontend passing tests, full Nyquist validation, and clean build
-state_head: cb4a7c4
+last_activity_desc: Phase 6 executed with 55 backend + 50 frontend passing tests, full Nyquist validation, and clean build
+state_head: b90d151
 progress:
   total_phases: 11
-  completed_phases: 5
-  total_plans: 10
-  completed_plans: 10
-  percent: 45
+  completed_phases: 6
+  total_plans: 12
+  completed_plans: 12
+  percent: 54
 ---
 
 # Project State
@@ -23,24 +23,24 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-04)
 
 **Core value:** One complete skill exchange works reliably from discovery, request, and scheduling to two-party service completion and atomic time-credit ledger settlement.
-**Current focus:** Phase 5: Matching & Recommendation Engine (Complete) ➔ Next: Phase 6 (Exchange Request Lifecycle)
+**Current focus:** Phase 6: Exchange Request Lifecycle (Complete) ➔ Next: Phase 7 (Booking & Service Scheduling)
 
 ## Current Position
 
-Phase: 5 of 11 (Matching & Recommendation Engine)
+Phase: 6 of 11 (Exchange Request Lifecycle)
 Plan: 2 of 2 in current phase (Complete)
 Status: Completed & Verified
-Last activity: 2026-10-04 — Phase 5 executed with 37 backend + 35 frontend passing tests
+Last activity: 2026-10-04 — Phase 6 executed with 55 backend + 50 frontend passing tests
 Branch: master
 
-Progress: [█████░░░░░] 45%
+Progress: [██████░░░░] 54%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 12
 - Average duration: ~15 min
-- Total execution time: 2.5 hours
+- Total execution time: 3.0 hours
 
 **By Phase:**
 
@@ -51,9 +51,10 @@ Progress: [█████░░░░░] 45%
 | 3. Member Profiles & Skill Catalog Management | 2/2 | 30m | 15m | Complete |
 | 4. Skill Discovery & Search Experience | 2/2 | 30m | 15m | Complete |
 | 5. Matching & Recommendation Engine | 2/2 | 30m | 15m | Complete |
+| 6. Exchange Request Lifecycle | 2/2 | 30m | 15m | Complete |
 
 **Recent Trend:**
-- Last 10 plans: 01-01, 01-02, 02-01, 02-02, 03-01, 03-02, 04-01, 04-02, 05-01, 05-02
+- Last 12 plans: 01-01, 01-02, 02-01, 02-02, 03-01, 03-02, 04-01, 04-02, 05-01, 05-02, 06-01, 06-02
 - Trend: Stable
 
 ## Accumulated Context
@@ -85,6 +86,10 @@ Decisions are logged in PROJECT.md Key Decisions table and phase CONTEXT.md file
 - [D-503]: Reciprocal mutual trade detection granting +10% score bonus and top sorting priority.
 - [D-504]: Authenticated REST endpoint `GET /api/v1/recommendations/me` returning sanitized `RecommendationDto`.
 - [D-505]: Prominent Dashboard placement below wallet metrics with skeletons and empty fallback.
+- [D-601]: Balance verified at request creation without locking/escrow; transfer happens at service completion.
+- [D-602]: `RequestExchangeModal.jsx` popup with skill selector, quick duration chips, credit cost preview, and notes input.
+- [D-603]: Dual-persona `/exchanges` dashboard with segmented Incoming vs Outgoing tabs and status chips.
+- [D-604]: State machine guards: only provider accepts/rejects; only requester cancels; transitions restricted to PENDING.
 
 ### Blockers/Concerns
 
@@ -92,6 +97,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-10-04T08:41:00.000Z
-Stopped at: Phase 5 executed, tested, and verified
-Resume file: .planning/phases/05-matching-recommendation-engine/05-VERIFICATION.md
+Last session: 2026-10-04T09:10:00.000Z
+Stopped at: Phase 6 executed, tested, and verified
+Resume file: .planning/phases/06-exchange-request-lifecycle/06-VERIFICATION.md
