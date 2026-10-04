@@ -55,6 +55,9 @@ class ExchangeServiceTest {
     @Mock
     private WalletService walletService;
 
+    @Mock
+    private com.skillswap.platform.notification.service.NotificationService notificationService;
+
     @InjectMocks
     private ExchangeService exchangeService;
 

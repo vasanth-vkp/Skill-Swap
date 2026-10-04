@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, Sparkles, Menu, X, ArrowRight, User, LayoutDashboard, ArrowLeftRight, Wallet } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import NotificationBell from './NotificationBell';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -48,6 +49,9 @@ export default function Navbar() {
           <div className="hidden sm:flex items-center gap-4">
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
+                {/* Notification Bell */}
+                <NotificationBell />
+
                 {/* Wallet Balance Pill */}
                 <Link
                   to="/wallet"

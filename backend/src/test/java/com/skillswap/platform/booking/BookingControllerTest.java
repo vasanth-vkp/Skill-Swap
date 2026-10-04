@@ -62,6 +62,9 @@ class BookingControllerTest {
     @Autowired
     private SkillRepository skillRepository;
 
+    @Autowired
+    private com.skillswap.platform.notification.repository.NotificationRepository notificationRepository;
+
     private String aliceToken;
     private Long aliceId;
 
@@ -102,6 +105,7 @@ class BookingControllerTest {
     }
 
     private void cleanDb() {
+        notificationRepository.deleteAll();
         creditTransactionRepository.deleteAll();
         bookingRepository.deleteAll();
         exchangeRequestRepository.deleteAll();

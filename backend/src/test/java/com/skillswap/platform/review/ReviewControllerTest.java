@@ -67,6 +67,9 @@ class ReviewControllerTest {
     @Autowired
     private SkillRepository skillRepository;
 
+    @Autowired
+    private com.skillswap.platform.notification.repository.NotificationRepository notificationRepository;
+
     private String aliceToken;
     private Long aliceId;
     private String bobToken;
@@ -105,6 +108,7 @@ class ReviewControllerTest {
     }
 
     private void cleanDb() {
+        notificationRepository.deleteAll();
         reviewRepository.deleteAll();
         creditTransactionRepository.deleteAll();
         bookingRepository.deleteAll();

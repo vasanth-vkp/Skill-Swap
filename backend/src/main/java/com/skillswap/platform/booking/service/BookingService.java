@@ -8,6 +8,9 @@ import com.skillswap.platform.booking.repository.BookingRepository;
 import com.skillswap.platform.exchange.entity.ExchangeRequest;
 import com.skillswap.platform.exchange.entity.ExchangeStatus;
 import com.skillswap.platform.exchange.repository.ExchangeRequestRepository;
+import com.skillswap.platform.notification.entity.NotificationType;
+import com.skillswap.platform.notification.service.NotificationService;
+import com.skillswap.platform.user.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +27,16 @@ public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final ExchangeRequestRepository exchangeRequestRepository;
+    private final NotificationService notificationService;
 
-    public BookingService(BookingRepository bookingRepository, ExchangeRequestRepository exchangeRequestRepository) {
+    public BookingService(
+            BookingRepository bookingRepository,
+            ExchangeRequestRepository exchangeRequestRepository,
+            NotificationService notificationService
+    ) {
         this.bookingRepository = bookingRepository;
         this.exchangeRequestRepository = exchangeRequestRepository;
+        this.notificationService = notificationService;
     }
 
     public BookingDto scheduleBooking(Long exchangeId, ScheduleBookingRequest request, Long currentUserId) {
@@ -65,6 +74,11 @@ public class BookingService {
 
         exchange.setStatus(ExchangeStatus.SCHEDULED);
         Booking saved = bookingRepository.save(booking);
+
+        User counterpart = exchange.getRequester().getId().equals(currentUserId) ? exchange.getProvider() : exchange.getRequester();
+        notificationService.sendNotification(counterpart, NotificationType.BOOKING_SCHEDULED,
+                "A session was scheduled for " + exchange.getSkill().getName());
+
         return BookingDto.fromEntity(saved);
     }
 
@@ -93,6 +107,11 @@ public class BookingService {
         booking.setStartTime(request.getStartTime());
         booking.setEndTime(endTime);
         Booking saved = bookingRepository.save(booking);
+
+        User counterpart = exchange.getRequester().getId().equals(currentUserId) ? exchange.getProvider() : exchange.getRequester();
+        notificationService.sendNotification(counterpart, NotificationType.BOOKING_SCHEDULED,
+                "The session for " + exchange.getSkill().getName() + " was rescheduled");
+
         return BookingDto.fromEntity(saved);
     }
 

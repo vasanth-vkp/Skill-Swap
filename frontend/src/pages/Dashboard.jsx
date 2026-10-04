@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Clock, Sparkles, PlusCircle, Search, ArrowRight, LogOut, ShieldCheck, User } from 'lucide-react';
+import { Clock, Sparkles, PlusCircle, Search, ArrowRight, LogOut, ShieldCheck, User, Bell, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import recommendationService from '../services/recommendationService';
+import notificationService from '../services/notificationService';
 import RecommendationCard from '../components/dashboard/RecommendationCard';
 import UpcomingBookingsWidget from '../components/dashboard/UpcomingBookingsWidget';
 
@@ -13,6 +14,7 @@ export default function Dashboard() {
   const [recommendations, setRecommendations] = useState([]);
   const [loadingRecs, setLoadingRecs] = useState(true);
   const [recsError, setRecsError] = useState(null);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
@@ -36,7 +38,19 @@ export default function Dashboard() {
       }
     };
 
+    const fetchUnreadCount = async () => {
+      try {
+        const countData = await notificationService.getUnreadCount();
+        if (isMounted) {
+          setUnreadNotifications(countData.count || 0);
+        }
+      } catch {
+        // Gracefully ignore notification fetch error on dashboard
+      }
+    };
+
     fetchRecommendations();
+    fetchUnreadCount();
     return () => {
       isMounted = false;
     };
@@ -92,6 +106,35 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        {/* Unread Notifications Alert Banner */}
+        {unreadNotifications > 0 && (
+          <div
+            data-testid="unread-notifications-banner"
+            className="mb-6 p-4 rounded-2xl bg-amber-50/90 border border-amber-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-amber-950 shadow-sm animate-in fade-in duration-200"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-amber-200/60 text-amber-800 shrink-0">
+                <Bell className="w-5 h-5 animate-bounce" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-slate-900">
+                  You have {unreadNotifications} unread notification{unreadNotifications > 1 ? 's' : ''}
+                </p>
+                <p className="text-xs text-amber-800">
+                  Community members have interacted with your skill exchanges, bookings, or reviews.
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/exchanges"
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition shadow-sm shrink-0"
+            >
+              <span>View Exchanges</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        )}
+
         {/* Welcome Banner */}
         <div className="bg-gradient-to-r from-amber-600 to-amber-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-amber-900/10 mb-8 relative overflow-hidden">
           <div className="relative z-10 max-w-2xl">

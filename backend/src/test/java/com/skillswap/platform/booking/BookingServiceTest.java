@@ -40,6 +40,9 @@ class BookingServiceTest {
     @Mock
     private ExchangeRequestRepository exchangeRequestRepository;
 
+    @Mock
+    private com.skillswap.platform.notification.service.NotificationService notificationService;
+
     @InjectMocks
     private BookingService bookingService;
 

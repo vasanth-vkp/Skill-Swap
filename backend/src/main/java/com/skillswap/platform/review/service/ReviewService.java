@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import com.skillswap.platform.notification.entity.NotificationType;
+import com.skillswap.platform.notification.service.NotificationService;
 
 @Service
 @Transactional
@@ -34,15 +36,18 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ExchangeRequestRepository exchangeRequestRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     public ReviewService(
             ReviewRepository reviewRepository,
             ExchangeRequestRepository exchangeRequestRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            NotificationService notificationService
     ) {
         this.reviewRepository = reviewRepository;
         this.exchangeRequestRepository = exchangeRequestRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     public ReviewDto createReview(Long currentUserId, CreateReviewRequest request) {
@@ -89,6 +94,9 @@ public class ReviewService {
         reviewee.setAverageRating(roundedAvg);
         reviewee.setTotalReviews((int) totalReviews);
         userRepository.save(reviewee);
+
+        notificationService.sendNotification(reviewee, NotificationType.REVIEW_RECEIVED,
+                reviewer.getName() + " left you a " + request.rating() + "-star review for " + exchange.getSkill().getName());
 
         log.info("User {} reviewed user {} with rating {} on exchange {}. New average: {}, total: {}",
                 reviewer.getId(), reviewee.getId(), request.rating(), exchange.getId(), roundedAvg, totalReviews);

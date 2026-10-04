@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Dashboard from '../Dashboard';
 import recommendationService from '../../services/recommendationService';
+import notificationService from '../../services/notificationService';
 
 vi.mock('../../context/AuthContext', () => ({
   useAuth: () => ({
@@ -19,6 +20,17 @@ vi.mock('../../services/recommendationService', () => ({
   },
   recommendationService: {
     getRecommendations: vi.fn(),
+  },
+}));
+
+vi.mock('../../services/notificationService', () => ({
+  default: {
+    getUnreadCount: vi.fn().mockResolvedValue({ count: 0 }),
+    getNotifications: vi.fn().mockResolvedValue([]),
+  },
+  notificationService: {
+    getUnreadCount: vi.fn().mockResolvedValue({ count: 0 }),
+    getNotifications: vi.fn().mockResolvedValue([]),
   },
 }));
 
@@ -74,6 +86,7 @@ const mockRecommendations = [
 describe('Dashboard Recommendations Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    notificationService.getUnreadCount.mockResolvedValue({ count: 0 });
   });
 
   it('renders loading skeleton while recommendations are being fetched', async () => {
@@ -142,5 +155,21 @@ describe('Dashboard Recommendations Integration', () => {
     await waitFor(() => {
       expect(screen.getByTestId('recommendations-empty')).toBeInTheDocument();
     });
+  });
+
+  it('renders unread notifications banner when unread notifications exist', async () => {
+    notificationService.getUnreadCount.mockResolvedValueOnce({ count: 2 });
+    recommendationService.getRecommendations.mockResolvedValueOnce([]);
+
+    render(
+      <BrowserRouter>
+        <Dashboard />
+      </BrowserRouter>
+    );
+
+    const banner = await screen.findByTestId('unread-notifications-banner');
+    expect(banner).toBeInTheDocument();
+    expect(screen.getByText(/unread notification/i)).toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: /view exchanges/i })[0]).toHaveAttribute('href', '/exchanges');
   });
 });

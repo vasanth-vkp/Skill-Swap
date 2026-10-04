@@ -55,6 +55,9 @@ class ExchangeControllerTest {
     @Autowired
     private SkillRepository skillRepository;
 
+    @Autowired
+    private com.skillswap.platform.notification.repository.NotificationRepository notificationRepository;
+
     private String aliceToken;
     private Long aliceId;
 
@@ -69,6 +72,7 @@ class ExchangeControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
+        notificationRepository.deleteAll();
         creditTransactionRepository.deleteAll();
         exchangeRequestRepository.deleteAll();
         userSkillRepository.deleteAll();
@@ -99,6 +103,7 @@ class ExchangeControllerTest {
 
     @org.junit.jupiter.api.AfterEach
     void tearDown() {
+        notificationRepository.deleteAll();
         creditTransactionRepository.deleteAll();
         exchangeRequestRepository.deleteAll();
         userSkillRepository.deleteAll();

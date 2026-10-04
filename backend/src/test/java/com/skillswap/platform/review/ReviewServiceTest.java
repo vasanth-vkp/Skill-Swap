@@ -44,6 +44,9 @@ class ReviewServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private com.skillswap.platform.notification.service.NotificationService notificationService;
+
     @InjectMocks
     private ReviewService reviewService;
 

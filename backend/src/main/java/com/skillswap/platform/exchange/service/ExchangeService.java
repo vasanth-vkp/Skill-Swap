@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
+import com.skillswap.platform.notification.entity.NotificationType;
+import com.skillswap.platform.notification.service.NotificationService;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,7 @@ public class ExchangeService {
     private final WalletRepository walletRepository;
     private final BookingRepository bookingRepository;
     private final WalletService walletService;
+    private final NotificationService notificationService;
 
     public ExchangeService(
             ExchangeRequestRepository exchangeRequestRepository,
@@ -44,7 +47,8 @@ public class ExchangeService {
             UserSkillRepository userSkillRepository,
             WalletRepository walletRepository,
             BookingRepository bookingRepository,
-            WalletService walletService
+            WalletService walletService,
+            NotificationService notificationService
     ) {
         this.exchangeRequestRepository = exchangeRequestRepository;
         this.userRepository = userRepository;
@@ -53,6 +57,7 @@ public class ExchangeService {
         this.walletRepository = walletRepository;
         this.bookingRepository = bookingRepository;
         this.walletService = walletService;
+        this.notificationService = notificationService;
     }
 
     public ExchangeDto createExchangeRequest(Long requesterId, CreateExchangeRequest request) {
@@ -87,6 +92,8 @@ public class ExchangeService {
 
         ExchangeRequest exchange = new ExchangeRequest(requester, provider, skill, requestedDuration, request.getNotes());
         ExchangeRequest saved = exchangeRequestRepository.save(exchange);
+        notificationService.sendNotification(provider, NotificationType.REQUEST_RECEIVED,
+                requester.getName() + " requested an exchange for " + skill.getName());
 
         return ExchangeDto.fromEntity(saved);
     }
@@ -141,6 +148,8 @@ public class ExchangeService {
 
         exchange.setStatus(ExchangeStatus.ACCEPTED);
         ExchangeRequest updated = exchangeRequestRepository.save(exchange);
+        notificationService.sendNotification(exchange.getRequester(), NotificationType.REQUEST_ACCEPTED,
+                exchange.getProvider().getName() + " accepted your exchange request for " + exchange.getSkill().getName());
         return ExchangeDto.fromEntity(updated);
     }
 
@@ -158,6 +167,8 @@ public class ExchangeService {
 
         exchange.setStatus(ExchangeStatus.REJECTED);
         ExchangeRequest updated = exchangeRequestRepository.save(exchange);
+        notificationService.sendNotification(exchange.getRequester(), NotificationType.REQUEST_DECLINED,
+                exchange.getProvider().getName() + " declined your exchange request for " + exchange.getSkill().getName());
         return ExchangeDto.fromEntity(updated);
     }
 
@@ -214,6 +225,11 @@ public class ExchangeService {
                         bookingRepository.save(booking);
                     });
             walletService.settleExchange(exchange);
+
+            notificationService.sendNotification(exchange.getRequester(), NotificationType.SERVICE_COMPLETED,
+                    "Exchange completed for " + exchange.getSkill().getName() + ". " + exchange.getDuration() + " credits transferred to " + exchange.getProvider().getName());
+            notificationService.sendNotification(exchange.getProvider(), NotificationType.CREDIT_TRANSFERRED,
+                    "Exchange completed for " + exchange.getSkill().getName() + "! You earned " + exchange.getDuration() + " credits from " + exchange.getRequester().getName());
         }
 
         ExchangeRequest updated = exchangeRequestRepository.save(exchange);

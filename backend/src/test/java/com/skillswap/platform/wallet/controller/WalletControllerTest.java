@@ -40,6 +40,9 @@ class WalletControllerTest {
     @Autowired
     private CreditTransactionRepository creditTransactionRepository;
 
+    @Autowired
+    private com.skillswap.platform.notification.repository.NotificationRepository notificationRepository;
+
     private String userToken;
     private Long userId;
 
@@ -71,6 +74,7 @@ class WalletControllerTest {
     }
 
     private void cleanDb() {
+        notificationRepository.deleteAll();
         creditTransactionRepository.deleteAll();
         walletRepository.deleteAll();
         userRepository.deleteAll();
