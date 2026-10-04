@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { MapPin, Calendar, Star, Sparkles, BookOpen, ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { MapPin, Calendar, Star, Sparkles, BookOpen, ArrowLeft, ArrowRight, ShieldCheck, User } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import profileService from '../services/profileService';
 import SkillBadge from '../components/profile/SkillBadge';
+import RequestExchangeModal from '../components/exchange/RequestExchangeModal';
 
 export default function MemberProfile() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
 
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const fetchMember = useCallback(async () => {
     try {
@@ -49,6 +54,16 @@ export default function MemberProfile() {
     );
   }
 
+  const isOwnProfile = user && Number(user.id) === Number(member.id);
+
+  const handleRequestClick = () => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: `/members/${id}` } });
+      return;
+    }
+    setModalOpen(true);
+  };
+
   const memberSinceFormatted = member.memberSince
     ? new Date(member.memberSince).toLocaleDateString(undefined, {
         month: 'short',
@@ -62,11 +77,11 @@ export default function MemberProfile() {
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
           <Link
-            to="/dashboard"
+            to="/explore"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-500 hover:text-stone-800 transition"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to Dashboard</span>
+            <span>Back to Explore</span>
           </Link>
         </div>
 
@@ -114,13 +129,23 @@ export default function MemberProfile() {
           </div>
 
           {/* Primary CTA */}
-          <Link
-            to={`/exchanges/new?providerId=${member.id}`}
-            className="w-full sm:w-auto py-3 px-6 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 group cursor-pointer"
-          >
-            <span>Request Skill Exchange</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
+          {isOwnProfile ? (
+            <Link
+              to="/profile"
+              className="w-full sm:w-auto py-3 px-6 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2"
+            >
+              <User className="w-4 h-4 text-stone-500" />
+              <span>Edit Your Profile</span>
+            </Link>
+          ) : (
+            <button
+              onClick={handleRequestClick}
+              className="w-full sm:w-auto py-3 px-6 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 group cursor-pointer"
+            >
+              <span>Request Skill Exchange</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          )}
         </div>
 
         {/* Member Bio */}
@@ -166,6 +191,18 @@ export default function MemberProfile() {
           </div>
         </div>
       </div>
+
+      {/* Request Exchange Modal */}
+      {modalOpen && (
+        <RequestExchangeModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          provider={member}
+          onSuccess={() => {
+            // Optional callback on success
+          }}
+        />
+      )}
     </div>
   );
 }

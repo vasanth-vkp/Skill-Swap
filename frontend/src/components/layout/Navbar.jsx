@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, Sparkles, Menu, X, ArrowRight, User, LayoutDashboard } from 'lucide-react';
+import { Clock, Sparkles, Menu, X, ArrowRight, User, LayoutDashboard, ArrowLeftRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function Navbar() {
@@ -47,7 +47,7 @@ export default function Navbar() {
           {/* Action CTAs */}
           <div className="hidden sm:flex items-center gap-4">
             {isAuthenticated ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 {/* Wallet Balance Pill */}
                 <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200/80 text-amber-900 shadow-sm text-xs font-bold">
                   <Clock className="w-3.5 h-3.5 text-amber-600" />
@@ -55,10 +55,19 @@ export default function Navbar() {
                   <span className="text-amber-700 font-medium">Credits</span>
                 </div>
 
+                {/* Exchanges Link */}
+                <Link
+                  to="/exchanges"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-700 hover:text-amber-600 px-3 py-2 rounded-xl hover:bg-stone-100 transition"
+                >
+                  <ArrowLeftRight className="w-4 h-4 text-stone-500" />
+                  <span>Exchanges</span>
+                </Link>
+
                 {/* Dashboard Link */}
                 <Link
                   to="/dashboard"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-700 hover:text-amber-600 px-3.5 py-2 rounded-xl hover:bg-stone-100 transition"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-700 hover:text-amber-600 px-3 py-2 rounded-xl hover:bg-stone-100 transition"
                 >
                   <LayoutDashboard className="w-4 h-4 text-stone-500" />
                   <span>Dashboard</span>

@@ -10,6 +10,7 @@ import Onboarding from './pages/Onboarding.jsx';
 import ProfileEdit from './pages/ProfileEdit.jsx';
 import MemberProfile from './pages/MemberProfile.jsx';
 import ExploreSkills from './pages/ExploreSkills.jsx';
+import Exchanges from './pages/Exchanges.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 
@@ -44,6 +45,14 @@ function AppLayout() {
           />
           <Route path="/members/:id" element={<MemberProfile />} />
           <Route path="/explore" element={<ExploreSkills />} />
+          <Route
+            path="/exchanges"
+            element={
+              <ProtectedRoute>
+                <Exchanges />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={
