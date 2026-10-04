@@ -1,9 +1,9 @@
 ---
 phase: "4"
 slug: "skill-discovery-search-experience"
-status: draft
+status: complete
 nyquist_compliant: true
-wave_0_complete: false
+wave_0_complete: true
 created: "2026-10-04"
 ---
 
@@ -40,18 +40,18 @@ created: "2026-10-04"
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 04-01-01 | 01 | 1 | DISC-01, DISC-02 | T-04-01, T-04-02 | Flyway migration V3 adds rating columns; UserRepository search query filters by category, location, rating, keyword | integration | `mvn -f backend/pom.xml test -Dtest=DiscoveryControllerTest` | ❌ W0 | ⏳ pending |
-| 04-01-02 | 01 | 1 | DISC-01, DISC-02, DISC-03 | T-04-02, T-04-03 | DiscoveryController exposes `/api/v1/members/search` returning sanitized `MemberCardDto` with pagination | integration | `mvn -f backend/pom.xml test -Dtest=DiscoveryControllerTest` | ❌ W0 | ⏳ pending |
-| 04-02-01 | 02 | 2 | DISC-02, DISC-03 | T-04-02 | ProviderCard and FilterSidebar components render provider info, experience badges, and filter controls | unit/component | `npm --prefix frontend test -- ProviderCard.test.jsx` | ❌ W0 | ⏳ pending |
-| 04-02-02 | 02 | 2 | DISC-01, DISC-02, DISC-03 | T-04-02 | ExploreSkills page integrates search bar, filter sidebar, responsive grid, pagination, and empty state | component | `npm --prefix frontend test -- ExploreSkills.test.jsx` | ❌ W0 | ⏳ pending |
+| 04-01-01 | 01 | 1 | DISC-01, DISC-02 | T-04-01, T-04-02 | Flyway migration V3 adds rating columns; UserRepository search query filters by category, location, rating, keyword | integration | `mvn -f backend/pom.xml test -Dtest=DiscoveryControllerTest` | ✅ | ✅ passed |
+| 04-01-02 | 01 | 1 | DISC-01, DISC-02, DISC-03 | T-04-02, T-04-03 | DiscoveryController exposes `/api/v1/members/search` returning sanitized `MemberCardDto` with pagination | integration | `mvn -f backend/pom.xml test -Dtest=DiscoveryControllerTest` | ✅ | ✅ passed |
+| 04-02-01 | 02 | 2 | DISC-02, DISC-03 | T-04-02 | ProviderCard and FilterSidebar components render provider info, experience badges, and filter controls | unit/component | `npm --prefix frontend test -- ProviderCard.test.jsx` | ✅ | ✅ passed |
+| 04-02-02 | 02 | 2 | DISC-01, DISC-02, DISC-03 | T-04-02 | ExploreSkills page integrates search bar, filter sidebar, responsive grid, pagination, and empty state | component | `npm --prefix frontend test -- ExploreSkills.test.jsx` | ✅ | ✅ passed |
 
 ---
 
 ## Wave 0 Requirements
 
-- [ ] `backend/src/test/java/com/skillswap/platform/discovery/DiscoveryControllerTest.java` — MockMvc tests for multi-criteria search, pagination, and privacy sanitization
-- [ ] `frontend/src/components/discovery/__tests__/ProviderCard.test.jsx` — tests for card details, experience badges, and profile navigation link
-- [ ] `frontend/src/pages/__tests__/ExploreSkills.test.jsx` — tests for explore page rendering, filtering, active filter dismissal, and pagination
+- [x] `backend/src/test/java/com/skillswap/platform/discovery/DiscoveryControllerTest.java` — MockMvc tests for multi-criteria search, pagination, and privacy sanitization
+- [x] `frontend/src/components/discovery/__tests__/ProviderCard.test.jsx` — tests for card details, experience badges, and profile navigation link
+- [x] `frontend/src/pages/__tests__/ExploreSkills.test.jsx` — tests for explore page rendering, filtering, active filter dismissal, and pagination
 
 ---
 
