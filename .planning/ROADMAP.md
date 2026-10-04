@@ -168,8 +168,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 10-01: Backend review entity, review eligibility validation, rating recalculation, and review endpoints.
-- [ ] 10-02: Frontend review submission modal, star rating selector, and profile reviews component.
+- [x] 10-01: Backend review entity, review eligibility validation, rating recalculation, and review endpoints.
+- [x] 10-02: Frontend review submission modal, star rating selector, and profile reviews component.
 
 ### Phase 11: In-App Notifications, Dashboard & End-to-End Polish
 **Goal**: Unify the entire experience with in-app event notifications, full Member Dashboard integration, and 9-page responsive UI verification.
@@ -202,5 +202,5 @@ Phases execute in numeric order: 1 ➔ 2 ➔ 3 ➔ 4 ➔ 5 ➔ 6 ➔ 7 ➔ 8 ➔
 | 7. Booking & Service Scheduling | 2/2 | Complete | 2026-10-04 |
 | 8. Service Completion & Dual Confirmation Workflow | 1/1 | Complete | 2026-10-04 |
 | 9. Atomic Time-Credit Ledger & Wallet Settlement | 2/2 | Complete | 2026-10-04 |
-| 10. Trust & Reputation (Reviews & Ratings) | 0/2 | Not started | - |
+| 10. Trust & Reputation (Reviews & Ratings) | 2/2 | Complete | 2026-10-04 |
 | 11. In-App Notifications, Dashboard & End-to-End Polish | 0/2 | Not started | - |

@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/health", "/actuator/health").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/skills/**").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/members/**").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/reviews/member/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

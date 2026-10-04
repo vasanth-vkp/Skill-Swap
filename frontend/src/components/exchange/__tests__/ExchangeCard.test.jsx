@@ -307,4 +307,53 @@ describe('ExchangeCard', () => {
     expect(screen.getByTestId('exchange-disputed-notice')).toBeInTheDocument();
     expect(screen.getByText(/partner was 45 minutes late and skipped topics/i)).toBeInTheDocument();
   });
+
+  it('renders Leave a Review button when status is COMPLETED and not yet reviewed', () => {
+    const completedExchange = {
+      ...mockExchange,
+      status: 'COMPLETED',
+      hasReviewed: false,
+    };
+    const onOpenReview = vi.fn();
+
+    render(
+      <BrowserRouter>
+        <ExchangeCard
+          exchange={completedExchange}
+          isIncoming={false}
+          onOpenReview={onOpenReview}
+        />
+      </BrowserRouter>
+    );
+
+    const reviewBtn = screen.getByTestId('leave-review-btn');
+    expect(reviewBtn).toBeInTheDocument();
+    expect(screen.getByText(/leave a review/i)).toBeInTheDocument();
+
+    fireEvent.click(reviewBtn);
+    expect(onOpenReview).toHaveBeenCalledWith(completedExchange);
+  });
+
+  it('renders Reviewed badge when completed exchange has already been reviewed', () => {
+    const reviewedExchange = {
+      ...mockExchange,
+      status: 'COMPLETED',
+      hasReviewed: true,
+    };
+
+    render(
+      <BrowserRouter>
+        <ExchangeCard
+          exchange={reviewedExchange}
+          isIncoming={false}
+          onOpenReview={vi.fn()}
+        />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByTestId('exchange-reviewed-badge')).toBeInTheDocument();
+    expect(screen.getByText('Reviewed')).toBeInTheDocument();
+    expect(screen.queryByTestId('leave-review-btn')).not.toBeInTheDocument();
+  });
 });
+

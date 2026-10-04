@@ -16,6 +16,7 @@ import {
   AlertTriangle,
   ShieldAlert,
   CheckCheck,
+  Star,
 } from 'lucide-react';
 
 const STATUS_CONFIG = {
@@ -74,6 +75,7 @@ export default function ExchangeCard({
   onSchedule,
   onConfirmCompletion,
   onDispute,
+  onOpenReview,
 }) {
   const [imageError, setImageError] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
@@ -350,12 +352,33 @@ export default function ExchangeCard({
         )}
 
         {exchange.status === 'COMPLETED' && (
-          <div
-            data-testid="exchange-completed-notice"
-            className="p-2.5 rounded-xl bg-teal-50 border border-teal-200 text-xs text-teal-900 font-semibold flex items-center justify-center gap-1.5"
-          >
-            <CheckCheck className="w-4 h-4 text-teal-600" />
-            <span>Service Verified & Completed</span>
+          <div className="space-y-2">
+            <div
+              data-testid="exchange-completed-notice"
+              className="p-2.5 rounded-xl bg-teal-50 border border-teal-200 text-xs text-teal-900 font-semibold flex items-center justify-center gap-1.5"
+            >
+              <CheckCheck className="w-4 h-4 text-teal-600" />
+              <span>Service Verified & Completed</span>
+            </div>
+            {exchange.hasReviewed ? (
+              <div
+                data-testid="exchange-reviewed-badge"
+                className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold"
+              >
+                <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                <span>Reviewed</span>
+              </div>
+            ) : onOpenReview ? (
+              <button
+                type="button"
+                onClick={() => onOpenReview(exchange)}
+                data-testid="leave-review-btn"
+                className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-xs transition cursor-pointer"
+              >
+                <Star className="w-3.5 h-3.5 fill-white text-white" />
+                <span>Leave a Review</span>
+              </button>
+            ) : null}
           </div>
         )}
 

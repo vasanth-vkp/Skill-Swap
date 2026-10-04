@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import profileService from '../services/profileService';
 import SkillBadge from '../components/profile/SkillBadge';
 import RequestExchangeModal from '../components/exchange/RequestExchangeModal';
+import ProfileReviews from '../components/profile/ProfileReviews';
 
 export default function MemberProfile() {
   const { id } = useParams();
@@ -190,6 +191,13 @@ export default function MemberProfile() {
             )}
           </div>
         </div>
+
+        {/* Community Reviews & Reputation */}
+        <ProfileReviews
+          memberId={member.id}
+          ratingAverage={member.ratingAverage}
+          totalReviews={member.totalReviews}
+        />
       </div>
 
       {/* Request Exchange Modal */}

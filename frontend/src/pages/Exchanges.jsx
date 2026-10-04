@@ -13,6 +13,7 @@ import exchangeService from '../services/exchangeService';
 import ExchangeCard from '../components/exchange/ExchangeCard';
 import ScheduleBookingModal from '../components/booking/ScheduleBookingModal';
 import DisputeExchangeModal from '../components/exchange/DisputeExchangeModal';
+import SubmitReviewModal from '../components/review/SubmitReviewModal';
 
 const STATUS_FILTERS = [
   { id: 'ALL', label: 'All' },
@@ -33,6 +34,7 @@ export default function Exchanges() {
   const [error, setError] = useState(null);
   const [schedulingExchange, setSchedulingExchange] = useState(null);
   const [disputingExchange, setDisputingExchange] = useState(null);
+  const [reviewingExchange, setReviewingExchange] = useState(null);
 
   const fetchExchanges = useCallback(async () => {
     try {
@@ -104,6 +106,12 @@ export default function Exchanges() {
   const handleDisputeOpen = (exchange) => setDisputingExchange(exchange);
   const handleDisputeClose = () => {
     setDisputingExchange(null);
+    fetchExchanges();
+  };
+
+  const handleReviewOpen = (exchange) => setReviewingExchange(exchange);
+  const handleReviewClose = () => {
+    setReviewingExchange(null);
     fetchExchanges();
   };
 
@@ -265,6 +273,7 @@ export default function Exchanges() {
                 onSchedule={handleScheduleOpen}
                 onConfirmCompletion={handleConfirmCompletion}
                 onDispute={handleDisputeOpen}
+                onOpenReview={handleReviewOpen}
               />
             ))}
           </div>
@@ -324,6 +333,15 @@ export default function Exchanges() {
           exchange={disputingExchange}
           onClose={() => setDisputingExchange(null)}
           onSuccess={handleDisputeClose}
+        />
+      )}
+
+      {reviewingExchange && (
+        <SubmitReviewModal
+          isOpen={Boolean(reviewingExchange)}
+          exchange={reviewingExchange}
+          onClose={() => setReviewingExchange(null)}
+          onSuccess={handleReviewClose}
         />
       )}
     </div>
