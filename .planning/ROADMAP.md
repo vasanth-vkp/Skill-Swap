@@ -9,7 +9,7 @@ SkillSwap builds an end-to-end, money-free community skill-exchange platform whe
 - [x] **Phase 2: Authentication, Security & Initial Wallet Grant** - Implement JWT auth, user registration with automatic 5 time-credits allocation, login, session persistence, and logout.
 - [x] **Phase 3: Member Profiles & Skill Catalog Management** - Build user profile management, categorized skills catalog, and offered/wanted skills tracking.
 - [x] **Phase 4: Skill Discovery & Search Experience** - Implement multi-filter search (category, location, rating) and provider cards on the Explore Skills page.
-- [ ] **Phase 5: Matching & Recommendation Engine** - Build weighted compatibility scoring (`0.4*Skill + 0.2*Location + 0.15*Availability + 0.15*Rating + 0.1*Experience`) with AI semantic matching for complementary needs.
+- [x] **Phase 5: Matching & Recommendation Engine** - Build weighted compatibility scoring (`0.4*Skill + 0.2*Location + 0.15*Availability + 0.15*Rating + 0.1*Experience`) with AI semantic matching for complementary needs.
 - [ ] **Phase 6: Exchange Request Lifecycle** - Implement request creation, balance checks, provider accept/reject actions, and request cancellation.
 - [ ] **Phase 7: Booking & Service Scheduling** - Implement scheduling workflow for date, time, and duration coordination with calendar views.
 - [ ] **Phase 8: Service Completion & Dual Confirmation Workflow** - Implement two-party completion verification, dispute initiation, and state transitions to COMPLETED.
@@ -92,8 +92,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: Backend recommendation service implementing mathematical scoring algorithm and semantic pairing logic.
-- [ ] 05-02: Frontend recommendation section on Dashboard and match quality badge indicators.
+- [x] 05-01: Backend recommendation service implementing mathematical scoring algorithm and semantic pairing logic.
+- [x] 05-02: Frontend recommendation section on Dashboard and match quality badge indicators.
 
 ### Phase 6: Exchange Request Lifecycle
 **Goal**: Allow members to send, accept, reject, and cancel service exchange requests with server-enforced validation.
@@ -197,7 +197,7 @@ Phases execute in numeric order: 1 ➔ 2 ➔ 3 ➔ 4 ➔ 5 ➔ 6 ➔ 7 ➔ 8 ➔
 | 2. Authentication, Security & Initial Wallet Grant | 2/2 | Complete | 2026-10-04 |
 | 3. Member Profiles & Skill Catalog Management | 2/2 | Complete | 2026-10-04 |
 | 4. Skill Discovery & Search Experience | 2/2 | Complete | 2026-10-04 |
-| 5. Matching & Recommendation Engine | 0/2 | Not started | - |
+| 5. Matching & Recommendation Engine | 2/2 | Complete | 2026-10-04 |
 | 6. Exchange Request Lifecycle | 0/2 | Not started | - |
 | 7. Booking & Service Scheduling | 0/2 | Not started | - |
 | 8. Service Completion & Dual Confirmation Workflow | 0/1 | Not started | - |
