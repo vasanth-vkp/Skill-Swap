@@ -14,20 +14,21 @@ One complete skill exchange works reliably from discovery, request, and scheduli
 
 ## Requirements
 
-### Validated
-(None yet — ship to validate)
+### Validated in v1.0 (2026-10-04)
+- [x] **User Authentication**: Registration with 5 free credits, login, logout, and token-based session management using JWT.
+- [x] **Member Profiles**: Profile details (name, bio, location, avatar), offered skills with 3-tier experience, and wanted skills.
+- [x] **Skill Catalog & Management**: 36 standard categorized skills and custom skills added dynamically.
+- [x] **Skill Discovery & Search**: Multi-attribute search and filtering by category, location, and rating across responsive provider cards.
+- [x] **Matching Engine**: Weighted compatibility scoring (`0.4*Skill + 0.2*Location + 0.15*Availability + 0.15*Rating + 0.1*Experience`) with domain semantic matching and reciprocal trade boost.
+- [x] **Exchange Lifecycle**: State machine transitions (`PENDING` -> `ACCEPTED` -> `SCHEDULED` -> `IN_PROGRESS` -> `COMPLETED`, plus terminal `REJECTED`, `CANCELLED`, `DISPUTED`).
+- [x] **Service Scheduling**: Date, time, and duration booking agreement between requester and provider with collision prevention.
+- [x] **Dual Completion & Dispute Workflow**: Independent dual confirmation flags and dispute reporting.
+- [x] **Atomic Time-Credit Ledger**: Server-side credit transfer upon dual completion confirmation (1 hour = 1 credit), immutable audit trail, non-negative balance enforcement, and initial 5-credit grant.
+- [x] **Trust & Reputation**: 1–5 star ratings and reviews strictly restricted to verified completed exchanges with atomic rating recalculation.
+- [x] **In-App Notifications & Dashboard**: Event notifications, header NotificationBell dropdown with live unread badge, and 9-page responsive dashboard.
 
 ### Active
-- [ ] User Authentication: Registration, login, logout, and token-based session management using JWT.
-- [ ] Member Profiles: Profile details (name, bio, location, avatar), offered skills, and wanted skills.
-- [ ] Skill Catalog & Management: Standardized skill categories and custom skill management.
-- [ ] Skill Discovery & Search: Multi-attribute search and filtering by category, location, and rating across 9 core pages.
-- [ ] Matching Engine: Rule-based compatibility scoring (`0.4*Skill + 0.2*Location + 0.15*Availability + 0.15*Rating + 0.1*Experience`) with AI semantic enhancement.
-- [ ] Exchange Lifecycle: Structured workflow (`PENDING` -> `ACCEPTED` -> `SCHEDULED` -> `IN_PROGRESS` -> `COMPLETED`, plus terminal `REJECTED`, `CANCELLED`).
-- [ ] Service Scheduling: Date, time, and duration booking agreement between requester and provider.
-- [ ] Atomic Time-Credit Ledger: Server-side credit transfer upon dual completion confirmation (1 hour = 1 credit), immutable audit trail, non-negative balance enforcement, and initial 5-credit grant.
-- [ ] Trust & Reputation: Ratings and review submission strictly restricted to verified completed exchanges.
-- [ ] User Dashboard & In-App Notifications: Overview of credit balance, active requests, upcoming bookings, recommended matches, and alert notifications.
+(None currently active. Define new features during `/gsd-new-milestone`).
 
 ### Out of Scope
 - Blockchain tokens / Smart contracts — PostgreSQL transactional ledger provides sufficient tamper-evident auditability and ACID guarantees without gas costs or latency.
@@ -53,15 +54,19 @@ One complete skill exchange works reliably from discovery, request, and scheduli
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Modular Monolith over Microservices | Eliminates network latency, deployment complexity, and distributed transactions during hackathon | ⏳ Pending |
-| PostgreSQL Relational Ledger over Blockchain | Delivers strict ACID compliance, instant transfers, and zero cost while maintaining full auditability | ⏳ Pending |
-| 1 Hour = 1 Credit Equality Principle | Keeps the system simple, fair, democratic, and eliminates pricing negotiations | ⏳ Pending |
-| Rule-Based Matching + AI Extension | Guarantees deterministic, reliable recommendations even without external LLM availability or API keys | ⏳ Pending |
-| Dual-Role Single User Model | Simplifies schema and UI since any community member can both teach and learn | ⏳ Pending |
+| Modular Monolith over Microservices | Eliminates network latency, deployment complexity, and distributed transactions during hackathon | ✅ Applied (Ph 1) |
+| PostgreSQL Relational Ledger over Blockchain | Delivers strict ACID compliance, instant transfers, and zero cost while maintaining full auditability | ✅ Applied (Ph 1 & 9) |
+| 1 Hour = 1 Credit Equality Principle | Keeps the system simple, fair, democratic, and eliminates pricing negotiations | ✅ Applied (Ph 2 & 9) |
+| Rule-Based Matching + AI Extension | Guarantees deterministic, reliable recommendations even without external LLM availability or API keys | ✅ Applied (Ph 5) |
+| Dual-Role Single User Model | Simplifies schema and UI since any community member can both teach and learn | ✅ Applied (Ph 2 & 3) |
 | Balance Check Without Escrow (D-601) | Verifies liquidity at request creation without locking credits, executing atomic settlement upon completion | ✅ Applied (Ph 6) |
 | Direct Booking Agreement (D-701) | Either participant of accepted exchange selects date/time, transitioning to SCHEDULED immediately with reschedule support | ✅ Applied (Ph 7) |
 | Booking Cancel Restores Exchange (D-702) | Cancelling booking restores exchange to ACCEPTED so parties can reschedule rather than restarting request | ✅ Applied (Ph 7) |
 | Server-Side Overlap Conflict Detection (D-704) | Rejects overlapping bookings for either participant to prevent double-booking conflicts | ✅ Applied (Ph 7) |
+| Dual-Confirmation Completion (D-801) | Independent two-party verification triggers COMPLETED status and server-side settlement | ✅ Applied (Ph 8) |
+| Atomic Transactional Settlement (D-901) | Transfer and audit ledger updates execute in single ACID transaction with idempotency guard | ✅ Applied (Ph 9) |
+| Verified Participant Reviews (D-1001) | Reviews restricted to completed exchange participants with atomic average rating updates | ✅ Applied (Ph 10) |
+| Real-Time Event Notifications (D-1101) | Automatic in-app notification triggers and bell dropdown with live unread badge | ✅ Applied (Ph 11) |
 
 ## Evolution
 
@@ -81,4 +86,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-10-04 after initialization*
+*Last updated: 2026-10-04 — v1.0 Milestone Completed & Shipped*
