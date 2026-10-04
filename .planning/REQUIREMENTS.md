@@ -58,11 +58,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Time-Credit Wallet & Transaction Ledger
 
-- [ ] **WALL-01**: System maintains a secure wallet for each member with current credit balance
-- [ ] **WALL-02**: System automatically executes an atomic transaction transferring credits (1 hour = 1 credit) from receiver to provider upon completion
-- [ ] **WALL-03**: System records every credit movement in an immutable audit ledger (`credit_transactions`)
-- [ ] **WALL-04**: System prevents duplicate settlement and strictly enforces non-negative credit balances
-- [ ] **WALL-05**: User can view their current balance, total credits earned, total credits spent, and complete transaction history
+- [x] **WALL-01**: System maintains a secure wallet for each member with current credit balance
+- [x] **WALL-02**: System automatically executes an atomic transaction transferring credits (1 hour = 1 credit) from receiver to provider upon completion
+- [x] **WALL-03**: System records every credit movement in an immutable audit ledger (`credit_transactions`)
+- [x] **WALL-04**: System prevents duplicate settlement and strictly enforces non-negative credit balances
+- [x] **WALL-05**: User can view their current balance, total credits earned, total credits spent, and complete transaction history
 
 ### Trust & Reputation
 
@@ -138,10 +138,10 @@ Deferred to future releases.
 | CMPL-01 | Phase 8 | Pending |
 | CMPL-02 | Phase 8 | Pending |
 | CMPL-03 | Phase 8 | Pending |
-| WALL-02 | Phase 9 | Pending |
-| WALL-03 | Phase 9 | Pending |
-| WALL-04 | Phase 9 | Pending |
-| WALL-05 | Phase 9 | Pending |
+| WALL-02 | Phase 9 | Complete |
+| WALL-03 | Phase 9 | Complete |
+| WALL-04 | Phase 9 | Complete |
+| WALL-05 | Phase 9 | Complete |
 | REV-01 | Phase 10 | Pending |
 | REV-02 | Phase 10 | Pending |
 | REV-03 | Phase 10 | Pending |
