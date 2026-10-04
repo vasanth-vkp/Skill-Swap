@@ -1,19 +1,19 @@
 ---
 gsd_state_version: "1.0"
-current_phase: 1
-current_phase_name: Project Scaffolding & Foundation Architecture
-status: planning
-stopped_at: Phase 1 verified and complete
-last_updated: "2026-10-04T06:46:19.232Z"
+current_phase: 2
+current_phase_name: Authentication, Security & Initial Wallet Grant
+status: completed
+stopped_at: Phase 2 verified and complete
+last_updated: "2026-10-04T07:35:00.000Z"
 last_activity: 2026-10-04
-last_activity_desc: Project initialized with 11 fine-grained roadmap phases
-state_head: 233e4d4edb014ea75eb603597fe884e9ad1ba651
+last_activity_desc: Phase 2 executed and verified (JWT auth, 5-credit wallet grant, AuthContext, celebration modal)
+state_head: 3e63459
 progress:
   total_phases: 11
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 2
-  percent: 9
+  completed_plans: 4
+  percent: 18
 ---
 
 # Project State
@@ -23,63 +23,55 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-04)
 
 **Core value:** One complete skill exchange works reliably from discovery, request, and scheduling to two-party service completion and atomic time-credit ledger settlement.
-**Current focus:** Phase 1: Project Scaffolding & Foundation Architecture
+**Current focus:** Phase 2: Authentication, Security & Initial Wallet Grant (Complete) ➔ Next: Phase 3 (Member Profiles & Skill Catalog Management)
 
 ## Current Position
 
-Phase: 1 of 11 (Project Scaffolding & Foundation Architecture)
-Plan: 0 of 2 in current phase
-Status: Ready to plan
-Last activity: 2026-10-04 — Project initialized with 11 fine-grained roadmap phases
+Phase: 2 of 11 (Authentication, Security & Initial Wallet Grant)
+Plan: 2 of 2 in current phase (Complete)
+Status: Completed & Verified
+Last activity: 2026-10-04 — Phase 2 executed with 11 backend + 11 frontend passing tests
 
-Progress: [█░░░░░░░░░] 9%
+Progress: [██░░░░░░░░] 18%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: 0 min
-- Total execution time: 0.0 hours
+- Total plans completed: 4
+- Average duration: ~15 min
+- Total execution time: 1.0 hours
 
 **By Phase:**
 
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| 1. Scaffolding & Foundation | 0/2 | - | - |
+| Phase | Plans | Total | Avg/Plan | Status |
+|-------|-------|-------|----------|--------|
+| 1. Scaffolding & Foundation | 2/2 | 30m | 15m | Complete |
+| 2. Authentication & Initial Wallet Grant | 2/2 | 30m | 15m | Complete |
 
 **Recent Trend:**
-- Last 5 plans: None
+- Last 4 plans: 01-01, 01-02, 02-01, 02-02
 - Trend: Stable
-
-*Updated after each plan completion*
 
 ## Accumulated Context
 
 ### Decisions
 
-Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting current work:
-- [Init]: Chose Modular Monolith (Spring Boot 3 + React 19/Vite + PostgreSQL) for rapid hackathon delivery and unified ACID transactions.
-- [Init]: Enforced 1 Hour = 1 Credit system-wide equality invariant.
-- [Init]: PostgreSQL transactional ledger selected for atomic credit transfers and auditability.
-- [Init]: Rule-based matching engine implemented first, augmented with AI semantic pairing.
-
-### Pending Todos
-
-None yet.
+Decisions are logged in PROJECT.md Key Decisions table and 02-CONTEXT.md:
+- [D-01]: Auto-login on registration - returning JWT token, user profile, and 5-credit wallet balance.
+- [D-02]: Celebratory WelcomeRewardModal popup announcing 5-credit initial grant upon signup.
+- [D-03]: Post-registration first destination is `/dashboard`.
+- [D-04]: Single-step registration form (Name, Email, Password, Location).
+- [D-05]: Client token stored in localStorage; Axios Bearer request interceptor.
+- [D-06]: 24-hour token lifetime (86,400s), HMAC-SHA256 signature.
+- [D-07]: Password validation (min 8 chars, letter + number), BCrypt strength 12.
+- [D-08]: ProtectedRoute preserves destination in `location.state.from`; 401 response interceptor clears credentials.
 
 ### Blockers/Concerns
 
-None yet.
-
-## Deferred Items
-
-| Category | Item | Status | Deferred At | Milestone |
-|----------|------|--------|-------------|-----------|
-| *(none)* | | | | |
+None.
 
 ## Session Continuity
 
-Last session: 2026-10-04T06:46:19.204Z
-Stopped at: Phase 1 verified and complete
-Resume file: .planning/phases/02-authentication-security-initial-wallet-grant/02-01-PLAN.md
+Last session: 2026-10-04T07:35:00.000Z
+Stopped at: Phase 2 verified and complete
+Resume file: .planning/phases/03-member-profiles-skill-catalog-management/03-01-PLAN.md

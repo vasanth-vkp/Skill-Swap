@@ -6,7 +6,7 @@ SkillSwap builds an end-to-end, money-free community skill-exchange platform whe
 ## Phases
 
 - [x] **Phase 1: Project Scaffolding & Foundation Architecture** - Initialize Spring Boot 3 modular monolith, React 19/Vite frontend, Tailwind CSS, and PostgreSQL schema baseline.
-- [ ] **Phase 2: Authentication, Security & Initial Wallet Grant** - Implement JWT auth, user registration with automatic 5 time-credits allocation, login, session persistence, and logout.
+- [x] **Phase 2: Authentication, Security & Initial Wallet Grant** - Implement JWT auth, user registration with automatic 5 time-credits allocation, login, session persistence, and logout.
 - [ ] **Phase 3: Member Profiles & Skill Catalog Management** - Build user profile management, categorized skills catalog, and offered/wanted skills tracking.
 - [ ] **Phase 4: Skill Discovery & Search Experience** - Implement multi-filter search (category, location, rating) and provider cards on the Explore Skills page.
 - [ ] **Phase 5: Matching & Recommendation Engine** - Build weighted compatibility scoring (`0.4*Skill + 0.2*Location + 0.15*Availability + 0.15*Rating + 0.1*Experience`) with AI semantic matching for complementary needs.
@@ -46,8 +46,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: Backend Spring Security, JWT token generation/validation, password hashing, and user registration with initial wallet grant.
-- [ ] 02-02: Frontend Login, Register, AuthContext, ProtectedRoute, and auth token storage.
+- [x] 02-01: Backend Spring Security, JWT token generation/validation, password hashing, and user registration with initial wallet grant.
+- [x] 02-02: Frontend Login, Register, AuthContext, ProtectedRoute, and auth token storage.
 
 ### Phase 3: Member Profiles & Skill Catalog Management
 **Goal**: Allow members to manage their profiles, browse standard skill categories, and specify skills offered and wanted.
@@ -194,7 +194,7 @@ Phases execute in numeric order: 1 ➔ 2 ➔ 3 ➔ 4 ➔ 5 ➔ 6 ➔ 7 ➔ 8 ➔
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Project Scaffolding & Foundation Architecture | 2/2 | Complete | 2026-10-04 |
-| 2. Authentication, Security & Initial Wallet Grant | 0/2 | Not started | - |
+| 2. Authentication, Security & Initial Wallet Grant | 2/2 | Complete | 2026-10-04 |
 | 3. Member Profiles & Skill Catalog Management | 0/2 | Not started | - |
 | 4. Skill Discovery & Search Experience | 0/2 | Not started | - |
 | 5. Matching & Recommendation Engine | 0/2 | Not started | - |
