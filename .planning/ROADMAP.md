@@ -7,7 +7,7 @@ SkillSwap builds an end-to-end, money-free community skill-exchange platform whe
 
 - [x] **Phase 1: Project Scaffolding & Foundation Architecture** - Initialize Spring Boot 3 modular monolith, React 19/Vite frontend, Tailwind CSS, and PostgreSQL schema baseline.
 - [x] **Phase 2: Authentication, Security & Initial Wallet Grant** - Implement JWT auth, user registration with automatic 5 time-credits allocation, login, session persistence, and logout.
-- [ ] **Phase 3: Member Profiles & Skill Catalog Management** - Build user profile management, categorized skills catalog, and offered/wanted skills tracking.
+- [x] **Phase 3: Member Profiles & Skill Catalog Management** - Build user profile management, categorized skills catalog, and offered/wanted skills tracking.
 - [ ] **Phase 4: Skill Discovery & Search Experience** - Implement multi-filter search (category, location, rating) and provider cards on the Explore Skills page.
 - [ ] **Phase 5: Matching & Recommendation Engine** - Build weighted compatibility scoring (`0.4*Skill + 0.2*Location + 0.15*Availability + 0.15*Rating + 0.1*Experience`) with AI semantic matching for complementary needs.
 - [ ] **Phase 6: Exchange Request Lifecycle** - Implement request creation, balance checks, provider accept/reject actions, and request cancellation.
@@ -62,8 +62,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: Backend entities, repositories, and REST APIs for user profile updates, skill catalog seeding, and user_skills CRUD.
-- [ ] 03-02: Frontend Onboarding page, Profile Edit page, and Public Member Profile component.
+- [x] 03-01: Backend entities, repositories, and REST APIs for user profile updates, skill catalog seeding, and user_skills CRUD.
+- [x] 03-02: Frontend Onboarding page, Profile Edit page, and Public Member Profile component.
 
 ### Phase 4: Skill Discovery & Search Experience
 **Goal**: Provide a responsive Explore Skills page where members can search and filter providers by category, location, and rating.
@@ -195,7 +195,7 @@ Phases execute in numeric order: 1 ➔ 2 ➔ 3 ➔ 4 ➔ 5 ➔ 6 ➔ 7 ➔ 8 ➔
 |-------|----------------|--------|-----------|
 | 1. Project Scaffolding & Foundation Architecture | 2/2 | Complete | 2026-10-04 |
 | 2. Authentication, Security & Initial Wallet Grant | 2/2 | Complete | 2026-10-04 |
-| 3. Member Profiles & Skill Catalog Management | 0/2 | Not started | - |
+| 3. Member Profiles & Skill Catalog Management | 2/2 | Complete | 2026-10-04 |
 | 4. Skill Discovery & Search Experience | 0/2 | Not started | - |
 | 5. Matching & Recommendation Engine | 0/2 | Not started | - |
 | 6. Exchange Request Lifecycle | 0/2 | Not started | - |

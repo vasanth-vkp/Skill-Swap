@@ -1,19 +1,19 @@
 ---
 gsd_state_version: "1.0"
-current_phase: 2
-current_phase_name: Authentication, Security & Initial Wallet Grant
+current_phase: 3
+current_phase_name: Member Profiles & Skill Catalog Management
 status: completed
-stopped_at: Phase 2 verified and complete
-last_updated: "2026-10-04T07:35:00.000Z"
+stopped_at: Phase 3 executed and verified
+last_updated: "2026-10-04T07:45:00.000Z"
 last_activity: 2026-10-04
-last_activity_desc: Phase 2 executed and verified (JWT auth, 5-credit wallet grant, AuthContext, celebration modal)
-state_head: 3e63459
+last_activity_desc: Phase 3 executed and verified (36-skill catalog, custom skills, profile edit, offered/wanted skills, onboarding wizard, public member view)
+state_head: a6f90c6
 progress:
   total_phases: 11
-  completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
-  percent: 18
+  completed_phases: 3
+  total_plans: 6
+  completed_plans: 6
+  percent: 27
 ---
 
 # Project State
@@ -23,23 +23,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-04)
 
 **Core value:** One complete skill exchange works reliably from discovery, request, and scheduling to two-party service completion and atomic time-credit ledger settlement.
-**Current focus:** Phase 2: Authentication, Security & Initial Wallet Grant (Complete) ➔ Next: Phase 3 (Member Profiles & Skill Catalog Management)
+**Current focus:** Phase 3: Member Profiles & Skill Catalog Management (Complete) ➔ Next: Phase 4 (Skill Discovery & Search Experience)
 
 ## Current Position
 
-Phase: 2 of 11 (Authentication, Security & Initial Wallet Grant)
+Phase: 3 of 11 (Member Profiles & Skill Catalog Management)
 Plan: 2 of 2 in current phase (Complete)
 Status: Completed & Verified
-Last activity: 2026-10-04 — Phase 2 executed with 11 backend + 11 frontend passing tests
+Last activity: 2026-10-04 — Phase 3 executed with 19 backend + 18 frontend passing tests
 
-Progress: [██░░░░░░░░] 18%
+Progress: [███░░░░░░░] 27%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
+- Total plans completed: 6
 - Average duration: ~15 min
-- Total execution time: 1.0 hours
+- Total execution time: 1.5 hours
 
 **By Phase:**
 
@@ -47,16 +47,17 @@ Progress: [██░░░░░░░░] 18%
 |-------|-------|-------|----------|--------|
 | 1. Scaffolding & Foundation | 2/2 | 30m | 15m | Complete |
 | 2. Authentication & Initial Wallet Grant | 2/2 | 30m | 15m | Complete |
+| 3. Member Profiles & Skill Catalog Management | 2/2 | 30m | 15m | Complete |
 
 **Recent Trend:**
-- Last 4 plans: 01-01, 01-02, 02-01, 02-02
+- Last 6 plans: 01-01, 01-02, 02-01, 02-02, 03-01, 03-02
 - Trend: Stable
 
 ## Accumulated Context
 
 ### Decisions
 
-Decisions are logged in PROJECT.md Key Decisions table and 02-CONTEXT.md:
+Decisions are logged in PROJECT.md Key Decisions table and phase CONTEXT.md files:
 - [D-01]: Auto-login on registration - returning JWT token, user profile, and 5-credit wallet balance.
 - [D-02]: Celebratory WelcomeRewardModal popup announcing 5-credit initial grant upon signup.
 - [D-03]: Post-registration first destination is `/dashboard`.
@@ -65,6 +66,12 @@ Decisions are logged in PROJECT.md Key Decisions table and 02-CONTEXT.md:
 - [D-06]: 24-hour token lifetime (86,400s), HMAC-SHA256 signature.
 - [D-07]: Password validation (min 8 chars, letter + number), BCrypt strength 12.
 - [D-08]: ProtectedRoute preserves destination in `location.state.from`; 401 response interceptor clears credentials.
+- [D-301]: Standard catalog seeded with 36 curated skills across 6 domains via Flyway V2 + dynamic custom skills inline.
+- [D-302]: 2-step onboarding wizard at `/onboarding` for profile details and initial skills with "Skip for now".
+- [D-303]: Offered skills require 3-tier experience level (BEGINNER, INTERMEDIATE, ADVANCED); wanted skills are topic tags.
+- [D-304]: Dual-persona unified profile view at `/profile` and public member profile at `/members/:id`.
+- [D-305]: 8 curated SVG community avatar presets + custom image URL preview.
+- [D-306]: Public member profile sanitization (excludes email, password hash, role, balance).
 
 ### Blockers/Concerns
 
@@ -72,6 +79,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-10-04T07:35:00.000Z
-Stopped at: Phase 2 verified and complete
-Resume file: .planning/phases/03-member-profiles-skill-catalog-management/03-01-PLAN.md
+Last session: 2026-10-04T07:45:00.000Z
+Stopped at: Phase 3 executed and verified
+Resume file: .planning/phases/04-skill-discovery-search-experience/04-01-PLAN.md
