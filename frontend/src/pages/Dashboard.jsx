@@ -122,10 +122,10 @@ export default function Dashboard() {
               </p>
             </div>
             <button
-              onClick={() => navigate('/skills/new')}
-              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-amber-600 group-hover:text-amber-700 transition"
+              onClick={() => navigate('/profile')}
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-amber-600 group-hover:text-amber-700 transition cursor-pointer"
             >
-              <span>Add a skill to your profile</span>
+              <span>Add or edit skills on your profile</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
@@ -148,7 +148,7 @@ export default function Dashboard() {
             </div>
             <button
               onClick={() => navigate('/explore')}
-              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-amber-600 group-hover:text-amber-700 transition"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-amber-600 group-hover:text-amber-700 transition cursor-pointer"
             >
               <span>Browse skills</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -157,27 +157,36 @@ export default function Dashboard() {
         </div>
 
         {/* Profile Details Mini-Card */}
-        <div className="bg-white rounded-2xl p-6 border border-stone-200/80 shadow-sm">
-          <h2 className="text-base font-bold text-stone-900 mb-4 flex items-center gap-2">
-            <User className="w-4 h-4 text-stone-500" />
-            <span>Account Details</span>
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-            <div>
-              <span className="block text-xs text-stone-400 font-medium">Name</span>
-              <span className="font-semibold text-stone-800">{user?.name}</span>
-            </div>
-            <div>
-              <span className="block text-xs text-stone-400 font-medium">Email</span>
-              <span className="font-semibold text-stone-800">{user?.email}</span>
-            </div>
-            <div>
-              <span className="block text-xs text-stone-400 font-medium">Member Role</span>
-              <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">
-                {user?.role || 'ROLE_MEMBER'}
-              </span>
+        <div className="bg-white rounded-2xl p-6 border border-stone-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-4 flex-1">
+            <h2 className="text-base font-bold text-stone-900 flex items-center gap-2">
+              <User className="w-4 h-4 text-stone-500" />
+              <span>Account & Profile</span>
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+              <div>
+                <span className="block text-xs text-stone-400 font-medium">Name</span>
+                <span className="font-semibold text-stone-800">{user?.name}</span>
+              </div>
+              <div>
+                <span className="block text-xs text-stone-400 font-medium">Email</span>
+                <span className="font-semibold text-stone-800">{user?.email}</span>
+              </div>
+              <div>
+                <span className="block text-xs text-stone-400 font-medium">Member Role</span>
+                <span className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">
+                  {user?.role || 'ROLE_MEMBER'}
+                </span>
+              </div>
             </div>
           </div>
+          <Link
+            to="/profile"
+            className="py-2.5 px-4 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-xl transition flex items-center gap-1.5"
+          >
+            <span>Edit Profile & Skills</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </main>
     </div>

@@ -6,22 +6,42 @@ import Landing from './pages/Landing.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import Onboarding from './pages/Onboarding.jsx';
+import ProfileEdit from './pages/ProfileEdit.jsx';
+import MemberProfile from './pages/MemberProfile.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 
 function AppLayout() {
   const location = useLocation();
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
-  const isDashboard = location.pathname === '/dashboard';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/onboarding';
+  const isStandaloneAppPage = location.pathname === '/dashboard' || location.pathname === '/profile';
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAF8F5]">
-      {!isAuthPage && !isDashboard && <Navbar />}
+      {!isAuthPage && !isStandaloneAppPage && <Navbar />}
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/onboarding"
+            element={
+              <ProtectedRoute>
+                <Onboarding />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfileEdit />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/members/:id" element={<MemberProfile />} />
           <Route
             path="/dashboard"
             element={
@@ -32,7 +52,7 @@ function AppLayout() {
           />
         </Routes>
       </main>
-      {!isAuthPage && !isDashboard && <Footer />}
+      {!isAuthPage && !isStandaloneAppPage && <Footer />}
     </div>
   );
 }
