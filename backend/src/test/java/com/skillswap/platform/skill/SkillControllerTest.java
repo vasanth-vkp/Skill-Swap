@@ -34,8 +34,12 @@ class SkillControllerTest {
     @Autowired
     private SkillRepository skillRepository;
 
+    @Autowired
+    private com.skillswap.platform.profile.repository.UserSkillRepository userSkillRepository;
+
     @BeforeEach
     void setUp() {
+        userSkillRepository.deleteAll();
         skillRepository.deleteAll();
         skillRepository.saveAll(List.of(
                 new Skill("Web Development", "Technology"),
