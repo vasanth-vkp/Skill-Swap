@@ -27,6 +27,14 @@ public class ExchangeDto {
     private String notes;
     private Instant createdAt;
 
+    private Boolean providerConfirmed;
+    private Boolean requesterConfirmed;
+    private Instant providerConfirmedAt;
+    private Instant requesterConfirmedAt;
+    private String disputeReason;
+    private Long disputedById;
+    private Instant disputedAt;
+
     public ExchangeDto() {}
 
     public static ExchangeDto fromEntity(ExchangeRequest entity) {
@@ -57,6 +65,16 @@ public class ExchangeDto {
         dto.setStatus(entity.getStatus());
         dto.setNotes(entity.getNotes());
         dto.setCreatedAt(entity.getCreatedAt());
+
+        dto.setProviderConfirmed(entity.isProviderConfirmed());
+        dto.setRequesterConfirmed(entity.isRequesterConfirmed());
+        dto.setProviderConfirmedAt(entity.getProviderConfirmedAt());
+        dto.setRequesterConfirmedAt(entity.getRequesterConfirmedAt());
+        dto.setDisputeReason(entity.getDisputeReason());
+        if (entity.getDisputedBy() != null) {
+            dto.setDisputedById(entity.getDisputedBy().getId());
+        }
+        dto.setDisputedAt(entity.getDisputedAt());
 
         return dto;
     }
@@ -187,5 +205,61 @@ public class ExchangeDto {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Boolean getProviderConfirmed() {
+        return providerConfirmed;
+    }
+
+    public void setProviderConfirmed(Boolean providerConfirmed) {
+        this.providerConfirmed = providerConfirmed;
+    }
+
+    public Boolean getRequesterConfirmed() {
+        return requesterConfirmed;
+    }
+
+    public void setRequesterConfirmed(Boolean requesterConfirmed) {
+        this.requesterConfirmed = requesterConfirmed;
+    }
+
+    public Instant getProviderConfirmedAt() {
+        return providerConfirmedAt;
+    }
+
+    public void setProviderConfirmedAt(Instant providerConfirmedAt) {
+        this.providerConfirmedAt = providerConfirmedAt;
+    }
+
+    public Instant getRequesterConfirmedAt() {
+        return requesterConfirmedAt;
+    }
+
+    public void setRequesterConfirmedAt(Instant requesterConfirmedAt) {
+        this.requesterConfirmedAt = requesterConfirmedAt;
+    }
+
+    public String getDisputeReason() {
+        return disputeReason;
+    }
+
+    public void setDisputeReason(String disputeReason) {
+        this.disputeReason = disputeReason;
+    }
+
+    public Long getDisputedById() {
+        return disputedById;
+    }
+
+    public void setDisputedById(Long disputedById) {
+        this.disputedById = disputedById;
+    }
+
+    public Instant getDisputedAt() {
+        return disputedAt;
+    }
+
+    public void setDisputedAt(Instant disputedAt) {
+        this.disputedAt = disputedAt;
     }
 }

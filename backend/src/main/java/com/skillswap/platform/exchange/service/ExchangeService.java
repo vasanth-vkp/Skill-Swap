@@ -1,5 +1,7 @@
 package com.skillswap.platform.exchange.service;
 
+import com.skillswap.platform.booking.entity.BookingStatus;
+import com.skillswap.platform.booking.repository.BookingRepository;
 import com.skillswap.platform.exchange.dto.CreateExchangeRequest;
 import com.skillswap.platform.exchange.dto.ExchangeDto;
 import com.skillswap.platform.exchange.entity.ExchangeRequest;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,19 +33,22 @@ public class ExchangeService {
     private final SkillRepository skillRepository;
     private final UserSkillRepository userSkillRepository;
     private final WalletRepository walletRepository;
+    private final BookingRepository bookingRepository;
 
     public ExchangeService(
             ExchangeRequestRepository exchangeRequestRepository,
             UserRepository userRepository,
             SkillRepository skillRepository,
             UserSkillRepository userSkillRepository,
-            WalletRepository walletRepository
+            WalletRepository walletRepository,
+            BookingRepository bookingRepository
     ) {
         this.exchangeRequestRepository = exchangeRequestRepository;
         this.userRepository = userRepository;
         this.skillRepository = skillRepository;
         this.userSkillRepository = userSkillRepository;
         this.walletRepository = walletRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     public ExchangeDto createExchangeRequest(Long requesterId, CreateExchangeRequest request) {
@@ -164,6 +170,83 @@ public class ExchangeService {
         }
 
         exchange.setStatus(ExchangeStatus.CANCELLED);
+        ExchangeRequest updated = exchangeRequestRepository.save(exchange);
+        return ExchangeDto.fromEntity(updated);
+    }
+
+    public ExchangeDto confirmCompletion(Long exchangeId, Long currentUserId) {
+        ExchangeRequest exchange = exchangeRequestRepository.findById(exchangeId)
+                .orElseThrow(() -> new IllegalArgumentException("Exchange not found: " + exchangeId));
+
+        boolean isRequester = Objects.equals(exchange.getRequester().getId(), currentUserId);
+        boolean isProvider = Objects.equals(exchange.getProvider().getId(), currentUserId);
+        if (!isRequester && !isProvider) {
+            throw new AccessDeniedException("Only exchange participants can confirm completion");
+        }
+
+        if (exchange.getStatus() != ExchangeStatus.SCHEDULED && exchange.getStatus() != ExchangeStatus.ACCEPTED) {
+            throw new IllegalStateException("Cannot confirm completion for exchange with status: " + exchange.getStatus());
+        }
+
+        Instant now = Instant.now();
+        if (isProvider) {
+            exchange.setProviderConfirmed(true);
+            if (exchange.getProviderConfirmedAt() == null) {
+                exchange.setProviderConfirmedAt(now);
+            }
+        }
+        if (isRequester) {
+            exchange.setRequesterConfirmed(true);
+            if (exchange.getRequesterConfirmedAt() == null) {
+                exchange.setRequesterConfirmedAt(now);
+            }
+        }
+
+        if (exchange.isProviderConfirmed() && exchange.isRequesterConfirmed()) {
+            exchange.setStatus(ExchangeStatus.COMPLETED);
+            bookingRepository.findByExchangeRequestIdAndStatus(exchangeId, BookingStatus.SCHEDULED)
+                    .ifPresent(booking -> {
+                        booking.setStatus(BookingStatus.COMPLETED);
+                        bookingRepository.save(booking);
+                    });
+        }
+
+        ExchangeRequest updated = exchangeRequestRepository.save(exchange);
+        return ExchangeDto.fromEntity(updated);
+    }
+
+    public ExchangeDto disputeExchange(Long exchangeId, Long currentUserId, String reason) {
+        if (reason == null || reason.trim().isEmpty()) {
+            throw new IllegalArgumentException("Dispute reason is required");
+        }
+
+        ExchangeRequest exchange = exchangeRequestRepository.findById(exchangeId)
+                .orElseThrow(() -> new IllegalArgumentException("Exchange not found: " + exchangeId));
+
+        boolean isRequester = Objects.equals(exchange.getRequester().getId(), currentUserId);
+        boolean isProvider = Objects.equals(exchange.getProvider().getId(), currentUserId);
+        if (!isRequester && !isProvider) {
+            throw new AccessDeniedException("Only exchange participants can dispute this exchange");
+        }
+
+        if (exchange.getStatus() == ExchangeStatus.COMPLETED ||
+            exchange.getStatus() == ExchangeStatus.CANCELLED ||
+            exchange.getStatus() == ExchangeStatus.REJECTED) {
+            throw new IllegalStateException("Cannot dispute exchange with status: " + exchange.getStatus());
+        }
+
+        User disputingUser = isRequester ? exchange.getRequester() : exchange.getProvider();
+        exchange.setStatus(ExchangeStatus.DISPUTED);
+        exchange.setDisputeReason(reason.trim());
+        exchange.setDisputedBy(disputingUser);
+        exchange.setDisputedAt(Instant.now());
+
+        bookingRepository.findByExchangeRequestIdAndStatus(exchangeId, BookingStatus.SCHEDULED)
+                .ifPresent(booking -> {
+                    booking.setStatus(BookingStatus.CANCELLED);
+                    bookingRepository.save(booking);
+                });
+
         ExchangeRequest updated = exchangeRequestRepository.save(exchange);
         return ExchangeDto.fromEntity(updated);
     }

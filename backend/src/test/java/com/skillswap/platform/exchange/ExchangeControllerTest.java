@@ -264,4 +264,76 @@ class ExchangeControllerTest {
                 .andExpect(jsonPath("$[0].providerName", is("Bob")))
                 .andExpect(jsonPath("$[0].skillName", is("Python Programming")));
     }
+
+    @Test
+    @DisplayName("Should handle dual confirmation completion flow transitioning to COMPLETED")
+    void shouldHandleDualConfirmationCompletionFlow() throws Exception {
+        Long exchangeId = createTestExchange(aliceToken, bobId, pythonSkill.getId(), new BigDecimal("1.00"), "Notes");
+
+        // Accept exchange first
+        mockMvc.perform(put("/api/v1/exchanges/" + exchangeId + "/accept")
+                        .header("Authorization", "Bearer " + bobToken)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // 1. Bob (provider) confirms completion
+        mockMvc.perform(post("/api/v1/exchanges/" + exchangeId + "/complete")
+                        .header("Authorization", "Bearer " + bobToken)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.providerConfirmed", is(true)))
+                .andExpect(jsonPath("$.requesterConfirmed", is(false)))
+                .andExpect(jsonPath("$.status", is("ACCEPTED")));
+
+        // 2. Non-participant Charlie cannot confirm
+        mockMvc.perform(post("/api/v1/exchanges/" + exchangeId + "/complete")
+                        .header("Authorization", "Bearer " + charlieToken)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+
+        // 3. Alice (requester) confirms completion -> Status becomes COMPLETED
+        mockMvc.perform(post("/api/v1/exchanges/" + exchangeId + "/complete")
+                        .header("Authorization", "Bearer " + aliceToken)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.providerConfirmed", is(true)))
+                .andExpect(jsonPath("$.requesterConfirmed", is(true)))
+                .andExpect(jsonPath("$.status", is("COMPLETED")));
+    }
+
+    @Test
+    @DisplayName("Should allow participant to dispute exchange and reject invalid dispute attempts")
+    void shouldAllowParticipantToDisputeExchange() throws Exception {
+        Long exchangeId = createTestExchange(aliceToken, bobId, pythonSkill.getId(), new BigDecimal("1.00"), "Notes");
+
+        // Accept exchange
+        mockMvc.perform(put("/api/v1/exchanges/" + exchangeId + "/accept")
+                        .header("Authorization", "Bearer " + bobToken)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // 1. Blank reason returns 400 Bad Request
+        mockMvc.perform(post("/api/v1/exchanges/" + exchangeId + "/dispute")
+                        .header("Authorization", "Bearer " + aliceToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new com.skillswap.platform.exchange.dto.DisputeRequest("   "))))
+                .andExpect(status().isBadRequest());
+
+        // 2. Non-participant Charlie cannot dispute
+        mockMvc.perform(post("/api/v1/exchanges/" + exchangeId + "/dispute")
+                        .header("Authorization", "Bearer " + charlieToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new com.skillswap.platform.exchange.dto.DisputeRequest("Partner no-show"))))
+                .andExpect(status().isForbidden());
+
+        // 3. Participant Alice files valid dispute
+        mockMvc.perform(post("/api/v1/exchanges/" + exchangeId + "/dispute")
+                        .header("Authorization", "Bearer " + aliceToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new com.skillswap.platform.exchange.dto.DisputeRequest("Provider did not attend session"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("DISPUTED")))
+                .andExpect(jsonPath("$.disputeReason", is("Provider did not attend session")))
+                .andExpect(jsonPath("$.disputedById", is(aliceId.intValue())));
+    }
 }

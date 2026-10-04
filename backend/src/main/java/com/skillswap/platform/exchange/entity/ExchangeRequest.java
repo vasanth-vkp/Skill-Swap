@@ -39,6 +39,28 @@ public class ExchangeRequest {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt = Instant.now();
 
+    @Column(name = "provider_confirmed", nullable = false)
+    private boolean providerConfirmed = false;
+
+    @Column(name = "requester_confirmed", nullable = false)
+    private boolean requesterConfirmed = false;
+
+    @Column(name = "provider_confirmed_at")
+    private Instant providerConfirmedAt;
+
+    @Column(name = "requester_confirmed_at")
+    private Instant requesterConfirmedAt;
+
+    @Column(name = "dispute_reason", columnDefinition = "TEXT")
+    private String disputeReason;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "disputed_by_id")
+    private User disputedBy;
+
+    @Column(name = "disputed_at")
+    private Instant disputedAt;
+
     public ExchangeRequest() {}
 
     public ExchangeRequest(User requester, User provider, Skill skill, BigDecimal duration, String notes) {
@@ -113,5 +135,61 @@ public class ExchangeRequest {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isProviderConfirmed() {
+        return providerConfirmed;
+    }
+
+    public void setProviderConfirmed(boolean providerConfirmed) {
+        this.providerConfirmed = providerConfirmed;
+    }
+
+    public boolean isRequesterConfirmed() {
+        return requesterConfirmed;
+    }
+
+    public void setRequesterConfirmed(boolean requesterConfirmed) {
+        this.requesterConfirmed = requesterConfirmed;
+    }
+
+    public Instant getProviderConfirmedAt() {
+        return providerConfirmedAt;
+    }
+
+    public void setProviderConfirmedAt(Instant providerConfirmedAt) {
+        this.providerConfirmedAt = providerConfirmedAt;
+    }
+
+    public Instant getRequesterConfirmedAt() {
+        return requesterConfirmedAt;
+    }
+
+    public void setRequesterConfirmedAt(Instant requesterConfirmedAt) {
+        this.requesterConfirmedAt = requesterConfirmedAt;
+    }
+
+    public String getDisputeReason() {
+        return disputeReason;
+    }
+
+    public void setDisputeReason(String disputeReason) {
+        this.disputeReason = disputeReason;
+    }
+
+    public User getDisputedBy() {
+        return disputedBy;
+    }
+
+    public void setDisputedBy(User disputedBy) {
+        this.disputedBy = disputedBy;
+    }
+
+    public Instant getDisputedAt() {
+        return disputedAt;
+    }
+
+    public void setDisputedAt(Instant disputedAt) {
+        this.disputedAt = disputedAt;
     }
 }

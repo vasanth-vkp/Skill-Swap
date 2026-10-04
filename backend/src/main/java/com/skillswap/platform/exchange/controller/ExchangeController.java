@@ -89,6 +89,25 @@ public class ExchangeController {
         return ResponseEntity.ok(dto);
     }
 
+    @PostMapping("/{id}/complete")
+    public ResponseEntity<ExchangeDto> completeExchange(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable Long id
+    ) {
+        ExchangeDto dto = exchangeService.confirmCompletion(id, principal.id());
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/{id}/dispute")
+    public ResponseEntity<ExchangeDto> disputeExchange(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable Long id,
+            @Valid @RequestBody com.skillswap.platform.exchange.dto.DisputeRequest request
+    ) {
+        ExchangeDto dto = exchangeService.disputeExchange(id, principal.id(), request.getReason());
+        return ResponseEntity.ok(dto);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));

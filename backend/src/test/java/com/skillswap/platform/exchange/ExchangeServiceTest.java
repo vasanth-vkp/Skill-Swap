@@ -48,6 +48,9 @@ class ExchangeServiceTest {
     @Mock
     private WalletRepository walletRepository;
 
+    @Mock
+    private com.skillswap.platform.booking.repository.BookingRepository bookingRepository;
+
     @InjectMocks
     private ExchangeService exchangeService;
 
@@ -216,5 +219,125 @@ class ExchangeServiceTest {
         assertThatThrownBy(() -> exchangeService.cancelExchange(50L, 1L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Only pending exchanges can be cancelled");
+    }
+
+    @Test
+    @DisplayName("Should set providerConfirmed and keep status SCHEDULED on first confirmation")
+    void shouldSetProviderConfirmedAndKeepStatusScheduled() {
+        ExchangeRequest exchange = new ExchangeRequest(requester, provider, skill, new BigDecimal("1.00"), "Notes");
+        exchange.setId(50L);
+        exchange.setStatus(ExchangeStatus.SCHEDULED);
+
+        when(exchangeRequestRepository.findById(50L)).thenReturn(Optional.of(exchange));
+        when(exchangeRequestRepository.save(any(ExchangeRequest.class))).thenAnswer(i -> i.getArgument(0));
+
+        ExchangeDto result = exchangeService.confirmCompletion(50L, 2L); // 2L is provider
+
+        assertThat(result.getProviderConfirmed()).isTrue();
+        assertThat(result.getRequesterConfirmed()).isFalse();
+        assertThat(result.getStatus()).isEqualTo(ExchangeStatus.SCHEDULED);
+        verify(bookingRepository, never()).findByExchangeRequestIdAndStatus(anyLong(), any());
+    }
+
+    @Test
+    @DisplayName("Should transition status to COMPLETED and update booking when second confirmation received")
+    void shouldTransitionToCompletedWhenBothConfirm() {
+        ExchangeRequest exchange = new ExchangeRequest(requester, provider, skill, new BigDecimal("1.00"), "Notes");
+        exchange.setId(50L);
+        exchange.setStatus(ExchangeStatus.SCHEDULED);
+        exchange.setProviderConfirmed(true);
+
+        com.skillswap.platform.booking.entity.Booking booking = new com.skillswap.platform.booking.entity.Booking(
+                exchange, java.time.Instant.now(), java.time.Instant.now().plusSeconds(3600), com.skillswap.platform.booking.entity.BookingStatus.SCHEDULED
+        );
+
+        when(exchangeRequestRepository.findById(50L)).thenReturn(Optional.of(exchange));
+        when(exchangeRequestRepository.save(any(ExchangeRequest.class))).thenAnswer(i -> i.getArgument(0));
+        when(bookingRepository.findByExchangeRequestIdAndStatus(50L, com.skillswap.platform.booking.entity.BookingStatus.SCHEDULED))
+                .thenReturn(Optional.of(booking));
+
+        ExchangeDto result = exchangeService.confirmCompletion(50L, 1L); // 1L is requester
+
+        assertThat(result.getProviderConfirmed()).isTrue();
+        assertThat(result.getRequesterConfirmed()).isTrue();
+        assertThat(result.getStatus()).isEqualTo(ExchangeStatus.COMPLETED);
+        assertThat(booking.getStatus()).isEqualTo(com.skillswap.platform.booking.entity.BookingStatus.COMPLETED);
+        verify(bookingRepository, times(1)).save(booking);
+    }
+
+    @Test
+    @DisplayName("Should forbid non-participant from confirming completion")
+    void shouldForbidNonParticipantFromConfirmingCompletion() {
+        ExchangeRequest exchange = new ExchangeRequest(requester, provider, skill, new BigDecimal("1.00"), "Notes");
+        exchange.setId(50L);
+        exchange.setStatus(ExchangeStatus.SCHEDULED);
+
+        when(exchangeRequestRepository.findById(50L)).thenReturn(Optional.of(exchange));
+
+        assertThatThrownBy(() -> exchangeService.confirmCompletion(50L, 999L))
+                .isInstanceOf(AccessDeniedException.class)
+                .hasMessageContaining("Only exchange participants can confirm completion");
+    }
+
+    @Test
+    @DisplayName("Should reject completion confirmation when status is not SCHEDULED or ACCEPTED")
+    void shouldRejectCompletionWhenStatusInvalid() {
+        ExchangeRequest exchange = new ExchangeRequest(requester, provider, skill, new BigDecimal("1.00"), "Notes");
+        exchange.setId(50L);
+        exchange.setStatus(ExchangeStatus.PENDING);
+
+        when(exchangeRequestRepository.findById(50L)).thenReturn(Optional.of(exchange));
+
+        assertThatThrownBy(() -> exchangeService.confirmCompletion(50L, 1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Cannot confirm completion for exchange with status");
+    }
+
+    @Test
+    @DisplayName("Should transition status to DISPUTED and cancel active booking when dispute filed")
+    void shouldTransitionToDisputedAndCancelBooking() {
+        ExchangeRequest exchange = new ExchangeRequest(requester, provider, skill, new BigDecimal("1.00"), "Notes");
+        exchange.setId(50L);
+        exchange.setStatus(ExchangeStatus.SCHEDULED);
+
+        com.skillswap.platform.booking.entity.Booking booking = new com.skillswap.platform.booking.entity.Booking(
+                exchange, java.time.Instant.now(), java.time.Instant.now().plusSeconds(3600), com.skillswap.platform.booking.entity.BookingStatus.SCHEDULED
+        );
+
+        when(exchangeRequestRepository.findById(50L)).thenReturn(Optional.of(exchange));
+        when(exchangeRequestRepository.save(any(ExchangeRequest.class))).thenAnswer(i -> i.getArgument(0));
+        when(bookingRepository.findByExchangeRequestIdAndStatus(50L, com.skillswap.platform.booking.entity.BookingStatus.SCHEDULED))
+                .thenReturn(Optional.of(booking));
+
+        ExchangeDto result = exchangeService.disputeExchange(50L, 1L, "Provider never showed up");
+
+        assertThat(result.getStatus()).isEqualTo(ExchangeStatus.DISPUTED);
+        assertThat(result.getDisputeReason()).isEqualTo("Provider never showed up");
+        assertThat(result.getDisputedById()).isEqualTo(1L);
+        assertThat(result.getDisputedAt()).isNotNull();
+        assertThat(booking.getStatus()).isEqualTo(com.skillswap.platform.booking.entity.BookingStatus.CANCELLED);
+        verify(bookingRepository, times(1)).save(booking);
+    }
+
+    @Test
+    @DisplayName("Should reject dispute when reason is empty")
+    void shouldRejectDisputeWhenReasonEmpty() {
+        assertThatThrownBy(() -> exchangeService.disputeExchange(50L, 1L, "  "))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Dispute reason is required");
+    }
+
+    @Test
+    @DisplayName("Should reject dispute when exchange is already completed")
+    void shouldRejectDisputeWhenAlreadyCompleted() {
+        ExchangeRequest exchange = new ExchangeRequest(requester, provider, skill, new BigDecimal("1.00"), "Notes");
+        exchange.setId(50L);
+        exchange.setStatus(ExchangeStatus.COMPLETED);
+
+        when(exchangeRequestRepository.findById(50L)).thenReturn(Optional.of(exchange));
+
+        assertThatThrownBy(() -> exchangeService.disputeExchange(50L, 1L, "Too late"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Cannot dispute exchange with status: COMPLETED");
     }
 }
