@@ -11,8 +11,8 @@ SkillSwap builds an end-to-end, money-free community skill-exchange platform whe
 - [x] **Phase 4: Skill Discovery & Search Experience** - Implement multi-filter search (category, location, rating) and provider cards on the Explore Skills page.
 - [x] **Phase 5: Matching & Recommendation Engine** - Build weighted compatibility scoring (`0.4*Skill + 0.2*Location + 0.15*Availability + 0.15*Rating + 0.1*Experience`) with AI semantic matching for complementary needs.
 - [x] **Phase 6: Exchange Request Lifecycle** - Implement request creation, balance checks, provider accept/reject actions, and request cancellation.
-- [ ] **Phase 7: Booking & Service Scheduling** - Implement scheduling workflow for date, time, and duration coordination with calendar views.
-- [ ] **Phase 8: Service Completion & Dual Confirmation Workflow** - Implement two-party completion verification, dispute initiation, and state transitions to COMPLETED.
+- [x] **Phase 7: Booking & Service Scheduling** - Implement scheduling workflow for date, time, and duration coordination with calendar views.
+- [x] **Phase 8: Service Completion & Dual Confirmation Workflow** - Implement two-party completion verification, dispute initiation, and state transitions to COMPLETED.
 - [ ] **Phase 9: Atomic Time-Credit Ledger & Wallet Settlement** - Implement ACID server-side credit transfer (1 hr = 1 credit), immutable audit transactions, and wallet history.
 - [ ] **Phase 10: Trust & Reputation (Reviews & Ratings)** - Implement verified post-exchange review and rating submissions with aggregate reputation updates.
 - [ ] **Phase 11: In-App Notifications, Dashboard & End-to-End Polish** - Wire in-app notifications, finalize unified Member Dashboard, and ensure responsive polish across all 9 pages.
