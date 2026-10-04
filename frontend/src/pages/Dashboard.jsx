@@ -4,6 +4,7 @@ import { Clock, Sparkles, PlusCircle, Search, ArrowRight, LogOut, ShieldCheck, U
 import { useAuth } from '../context/AuthContext';
 import recommendationService from '../services/recommendationService';
 import RecommendationCard from '../components/dashboard/RecommendationCard';
+import UpcomingBookingsWidget from '../components/dashboard/UpcomingBookingsWidget';
 
 export default function Dashboard() {
   const { user, walletBalance, logout } = useAuth();
@@ -189,6 +190,9 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
+
+        {/* Upcoming Skill Swaps (Scheduled Sessions) */}
+        <UpcomingBookingsWidget />
 
         {/* Recommended Matches For You */}
         <section className="mb-8">

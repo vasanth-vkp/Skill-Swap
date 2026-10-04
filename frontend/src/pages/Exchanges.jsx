@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import exchangeService from '../services/exchangeService';
 import ExchangeCard from '../components/exchange/ExchangeCard';
+import ScheduleBookingModal from '../components/booking/ScheduleBookingModal';
 
 const STATUS_FILTERS = [
   { id: 'ALL', label: 'All' },
@@ -26,6 +27,7 @@ export default function Exchanges() {
   const [exchanges, setExchanges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [schedulingExchange, setSchedulingExchange] = useState(null);
 
   const fetchExchanges = useCallback(async () => {
     try {
@@ -77,6 +79,12 @@ export default function Exchanges() {
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to cancel exchange request.');
     }
+  };
+
+  const handleScheduleOpen = (exchange) => setSchedulingExchange(exchange);
+  const handleScheduleClose = () => {
+    setSchedulingExchange(null);
+    fetchExchanges(); // refresh to show new SCHEDULED status
   };
 
   const pendingCount = exchanges.filter((e) => e.status === 'PENDING').length;
@@ -234,6 +242,7 @@ export default function Exchanges() {
                 onAccept={handleAccept}
                 onReject={handleReject}
                 onCancel={handleCancel}
+                onSchedule={handleScheduleOpen}
               />
             ))}
           </div>
@@ -277,6 +286,15 @@ export default function Exchanges() {
           </div>
         )}
       </div>
+
+      {schedulingExchange && (
+        <ScheduleBookingModal
+          isOpen={Boolean(schedulingExchange)}
+          exchange={schedulingExchange}
+          onClose={() => setSchedulingExchange(null)}
+          onSuccess={handleScheduleClose}
+        />
+      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@ import {
   Check,
   X,
   Trash2,
+  CalendarPlus,
 } from 'lucide-react';
 
 const STATUS_CONFIG = {
@@ -62,6 +63,7 @@ export default function ExchangeCard({
   onAccept,
   onReject,
   onCancel,
+  onSchedule,
 }) {
   const [imageError, setImageError] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
@@ -230,13 +232,28 @@ export default function ExchangeCard({
           </button>
         )}
 
-        {exchange.status !== 'PENDING' && (
+        {exchange.status === 'ACCEPTED' && onSchedule && (
+          <button
+            onClick={() => onSchedule(exchange)}
+            disabled={actionLoading}
+            className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition disabled:opacity-50 cursor-pointer"
+          >
+            <CalendarPlus className="w-3.5 h-3.5" />
+            <span>Schedule Session</span>
+          </button>
+        )}
+
+        {exchange.status !== 'PENDING' && exchange.status !== 'ACCEPTED' && (
           <div className="text-center py-1">
             <span className="text-[11px] text-stone-400 font-medium">
-              {exchange.status === 'ACCEPTED'
-                ? 'Accepted — Scheduling in next step'
-                : `Exchange ${statusConfig.label.toLowerCase()}`}
+              {`Exchange ${statusConfig.label.toLowerCase()}`}
             </span>
+          </div>
+        )}
+
+        {exchange.status === 'ACCEPTED' && !onSchedule && (
+          <div className="text-center py-1">
+            <span className="text-[11px] text-stone-400 font-medium">Accepted — awaiting scheduling</span>
           </div>
         )}
       </div>

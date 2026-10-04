@@ -22,6 +22,19 @@ vi.mock('../../services/recommendationService', () => ({
   },
 }));
 
+vi.mock('../../services/bookingService', () => ({
+  default: {
+    getUpcomingBookings: vi.fn().mockResolvedValue([]),
+    cancelBooking: vi.fn(),
+    rescheduleBooking: vi.fn(),
+  },
+  bookingService: {
+    getUpcomingBookings: vi.fn().mockResolvedValue([]),
+    cancelBooking: vi.fn(),
+    rescheduleBooking: vi.fn(),
+  },
+}));
+
 const mockRecommendations = [
   {
     providerId: 10,

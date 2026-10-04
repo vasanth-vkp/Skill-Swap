@@ -134,6 +134,29 @@ describe('ExchangeCard', () => {
     expect(screen.getByText('Accepted')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /accept request/i })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /decline/i })).not.toBeInTheDocument();
-    expect(screen.getByText(/accepted — scheduling in next step/i)).toBeInTheDocument();
+    expect(screen.getByText(/accepted — awaiting scheduling/i)).toBeInTheDocument();
+  });
+
+  it('displays Schedule Session button when status is ACCEPTED and onSchedule is provided', () => {
+    const acceptedExchange = {
+      ...mockExchange,
+      status: 'ACCEPTED',
+    };
+    const onSchedule = vi.fn();
+
+    render(
+      <BrowserRouter>
+        <ExchangeCard
+          exchange={acceptedExchange}
+          isIncoming={true}
+          onSchedule={onSchedule}
+        />
+      </BrowserRouter>
+    );
+
+    const scheduleBtn = screen.getByRole('button', { name: /schedule session/i });
+    expect(scheduleBtn).toBeInTheDocument();
+    fireEvent.click(scheduleBtn);
+    expect(onSchedule).toHaveBeenCalledWith(acceptedExchange);
   });
 });
