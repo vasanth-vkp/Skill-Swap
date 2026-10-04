@@ -1,0 +1,3 @@
+com\skillswap\platform\SkillSwapApplication.class
+com\skillswap\platform\core\config\WebConfig.class
+com\skillswap\platform\core\controller\HealthController.class
