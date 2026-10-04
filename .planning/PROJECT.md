@@ -58,6 +58,10 @@ One complete skill exchange works reliably from discovery, request, and scheduli
 | 1 Hour = 1 Credit Equality Principle | Keeps the system simple, fair, democratic, and eliminates pricing negotiations | ⏳ Pending |
 | Rule-Based Matching + AI Extension | Guarantees deterministic, reliable recommendations even without external LLM availability or API keys | ⏳ Pending |
 | Dual-Role Single User Model | Simplifies schema and UI since any community member can both teach and learn | ⏳ Pending |
+| Balance Check Without Escrow (D-601) | Verifies liquidity at request creation without locking credits, executing atomic settlement upon completion | ✅ Applied (Ph 6) |
+| Direct Booking Agreement (D-701) | Either participant of accepted exchange selects date/time, transitioning to SCHEDULED immediately with reschedule support | ✅ Applied (Ph 7) |
+| Booking Cancel Restores Exchange (D-702) | Cancelling booking restores exchange to ACCEPTED so parties can reschedule rather than restarting request | ✅ Applied (Ph 7) |
+| Server-Side Overlap Conflict Detection (D-704) | Rejects overlapping bookings for either participant to prevent double-booking conflicts | ✅ Applied (Ph 7) |
 
 ## Evolution
 
