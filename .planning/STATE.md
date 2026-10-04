@@ -1,19 +1,19 @@
 ---
 gsd_state_version: "1.0"
-current_phase: 6
-current_phase_name: Exchange Request Lifecycle
+current_phase: 7
+current_phase_name: Booking & Service Scheduling
 status: completed
-stopped_at: Phase 6 executed, tested, and verified (55 backend tests + 50 frontend tests passed)
-last_updated: "2026-10-04T09:10:00.000Z"
+stopped_at: Phase 7 executed, tested, and verified (71 backend tests + 66 frontend tests passed)
+last_updated: "2026-10-04T12:15:00.000Z"
 last_activity: 2026-10-04
-last_activity_desc: Phase 6 executed with 55 backend + 50 frontend passing tests, full Nyquist validation, and clean build
-state_head: b90d151
+last_activity_desc: Phase 7 executed with 71 backend + 66 frontend passing tests, full Nyquist validation, and clean build
+state_head: ca3dedd
 progress:
   total_phases: 11
-  completed_phases: 6
-  total_plans: 12
-  completed_plans: 12
-  percent: 54
+  completed_phases: 7
+  total_plans: 14
+  completed_plans: 14
+  percent: 64
 ---
 
 # Project State
@@ -23,24 +23,24 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-04)
 
 **Core value:** One complete skill exchange works reliably from discovery, request, and scheduling to two-party service completion and atomic time-credit ledger settlement.
-**Current focus:** Phase 6: Exchange Request Lifecycle (Complete) ➔ Next: Phase 7 (Booking & Service Scheduling)
+**Current focus:** Phase 7: Booking & Service Scheduling (Complete) ➔ Next: Phase 8 (Service Completion & Dual Confirmation Workflow)
 
 ## Current Position
 
-Phase: 6 of 11 (Exchange Request Lifecycle)
+Phase: 7 of 11 (Booking & Service Scheduling)
 Plan: 2 of 2 in current phase (Complete)
 Status: Completed & Verified
-Last activity: 2026-10-04 — Phase 6 executed with 55 backend + 50 frontend passing tests
+Last activity: 2026-10-04 — Phase 7 executed with 71 backend + 66 frontend passing tests
 Branch: master
 
-Progress: [██████░░░░] 54%
+Progress: [███████░░░] 64%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 14
 - Average duration: ~15 min
-- Total execution time: 3.0 hours
+- Total execution time: 3.5 hours
 
 **By Phase:**
 
@@ -52,9 +52,10 @@ Progress: [██████░░░░] 54%
 | 4. Skill Discovery & Search Experience | 2/2 | 30m | 15m | Complete |
 | 5. Matching & Recommendation Engine | 2/2 | 30m | 15m | Complete |
 | 6. Exchange Request Lifecycle | 2/2 | 30m | 15m | Complete |
+| 7. Booking & Service Scheduling | 2/2 | 30m | 15m | Complete |
 
 **Recent Trend:**
-- Last 12 plans: 01-01, 01-02, 02-01, 02-02, 03-01, 03-02, 04-01, 04-02, 05-01, 05-02, 06-01, 06-02
+- Last 14 plans: 01-01, 01-02, 02-01, 02-02, 03-01, 03-02, 04-01, 04-02, 05-01, 05-02, 06-01, 06-02, 07-01, 07-02
 - Trend: Stable
 
 ## Accumulated Context
@@ -90,6 +91,11 @@ Decisions are logged in PROJECT.md Key Decisions table and phase CONTEXT.md file
 - [D-602]: `RequestExchangeModal.jsx` popup with skill selector, quick duration chips, credit cost preview, and notes input.
 - [D-603]: Dual-persona `/exchanges` dashboard with segmented Incoming vs Outgoing tabs and status chips.
 - [D-604]: State machine guards: only provider accepts/rejects; only requester cancels; transitions restricted to PENDING.
+- [D-701]: Authoritative duration math (`endTime = startTime + duration * 60 min`) computed server-side.
+- [D-702]: Cancelling a scheduled booking marks booking `CANCELLED` and restores exchange request status to `ACCEPTED`.
+- [D-703]: Minimum future time horizon verification (scheduled start time must be >= 15 minutes in future).
+- [D-704]: Rescheduling re-verifies calendar collisions excluding current booking ID.
+- [D-705]: Prominent Dashboard placement of Upcoming Bookings widget between wallet balance and recommendations.
 
 ### Blockers/Concerns
 
@@ -97,6 +103,7 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-10-04T09:10:00.000Z
-Stopped at: Phase 6 executed, tested, and verified
-Resume file: .planning/phases/06-exchange-request-lifecycle/06-VERIFICATION.md
+Last session: 2026-10-04T12:15:00.000Z
+Stopped at: Phase 7 executed, tested, and verified
+Resume file: .planning/phases/07-booking-service-scheduling/07-VERIFICATION.md
+

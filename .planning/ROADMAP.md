@@ -123,8 +123,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: Backend booking model, scheduling endpoints, conflict checks, and reschedule handler.
-- [ ] 07-02: Frontend booking modal/form and upcoming bookings widget with countdown/calendar badges.
+- [x] 07-01: Backend booking model, scheduling endpoints, conflict checks, and reschedule handler.
+- [x] 07-02: Frontend booking modal/form and upcoming bookings widget with countdown/calendar badges.
 
 ### Phase 8: Service Completion & Dual Confirmation Workflow
 **Goal**: Provide a tamper-proof dual-confirmation workflow to verify service delivery before initiating settlement.
@@ -198,8 +198,8 @@ Phases execute in numeric order: 1 ➔ 2 ➔ 3 ➔ 4 ➔ 5 ➔ 6 ➔ 7 ➔ 8 ➔
 | 3. Member Profiles & Skill Catalog Management | 2/2 | Complete | 2026-10-04 |
 | 4. Skill Discovery & Search Experience | 2/2 | Complete | 2026-10-04 |
 | 5. Matching & Recommendation Engine | 2/2 | Complete | 2026-10-04 |
-| 6. Exchange Request Lifecycle | 0/2 | Not started | - |
-| 7. Booking & Service Scheduling | 0/2 | Not started | - |
+| 6. Exchange Request Lifecycle | 2/2 | Complete | 2026-10-04 |
+| 7. Booking & Service Scheduling | 2/2 | Complete | 2026-10-04 |
 | 8. Service Completion & Dual Confirmation Workflow | 0/1 | Not started | - |
 | 9. Atomic Time-Credit Ledger & Wallet Settlement | 0/2 | Not started | - |
 | 10. Trust & Reputation (Reviews & Ratings) | 0/2 | Not started | - |
