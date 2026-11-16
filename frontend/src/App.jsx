@@ -12,6 +12,7 @@ import MemberProfile from './pages/MemberProfile.jsx';
 import ExploreSkills from './pages/ExploreSkills.jsx';
 import Exchanges from './pages/Exchanges.jsx';
 import Wallet from './pages/Wallet.jsx';
+import Reviews from './pages/Reviews.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 
@@ -59,6 +60,14 @@ function AppLayout() {
             element={
               <ProtectedRoute>
                 <Wallet />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reviews"
+            element={
+              <ProtectedRoute>
+                <Reviews />
               </ProtectedRoute>
             }
           />

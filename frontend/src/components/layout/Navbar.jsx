@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, Sparkles, Menu, X, ArrowRight, User, LayoutDashboard, ArrowLeftRight, Wallet } from 'lucide-react';
+import { Clock, Sparkles, Menu, X, ArrowRight, User, LayoutDashboard, ArrowLeftRight, Wallet, Star } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import NotificationBell from './NotificationBell';
 
@@ -81,6 +81,15 @@ export default function Navbar() {
                   <span>Exchanges</span>
                 </Link>
 
+                {/* Reviews Link */}
+                <Link
+                  to="/reviews"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-700 hover:text-amber-600 px-3 py-2 rounded-xl hover:bg-stone-100 transition"
+                >
+                  <Star className="w-4 h-4 text-stone-500" />
+                  <span>Reviews</span>
+                </Link>
+
                 {/* Dashboard Link */}
                 <Link
                   to="/dashboard"
@@ -147,6 +156,13 @@ export default function Navbar() {
             className="block px-3 py-2 rounded-xl text-base font-semibold text-slate-800 hover:bg-stone-100"
           >
             Time Credits
+          </Link>
+          <Link
+            to="/reviews"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-xl text-base font-semibold text-slate-800 hover:bg-stone-100"
+          >
+            Reviews
           </Link>
           <div className="pt-3 border-t border-stone-200 flex flex-col gap-2">
             {isAuthenticated ? (

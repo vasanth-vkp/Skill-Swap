@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { 
-  Clock, Sparkles, Search, ArrowRight, CheckCircle2, Star, 
-  MapPin, Users, Award, ShieldCheck, Repeat, Zap, BookOpen 
+import {
+  Clock, Sparkles, Search, ArrowRight, CheckCircle2, Star,
+  MapPin, Users, Award, ShieldCheck, Repeat, Zap, BookOpen
 } from 'lucide-react';
 
 export default function Landing() {
@@ -68,14 +68,14 @@ export default function Landing() {
 
   return (
     <div className="space-y-20 pb-20">
-      
+
       {/* 1. HERO SECTION */}
       <section className="relative pt-12 pb-16 lg:pt-20 lg:pb-24 overflow-hidden">
         {/* Subtle decorative glow */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-amber-200/40 via-coral-200/30 to-amber-100/20 blur-3xl pointer-events-none rounded-full" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-          
+
           {/* Eyebrow Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cream-50 border border-amber-300/80 shadow-warm-sm animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -94,7 +94,7 @@ export default function Landing() {
               </span>
             </h1>
             <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-              SkillSwap is a money-free community network where members exchange everyday skills using time credits. 
+              SkillSwap is a money-free community network where members exchange everyday skills using time credits.
               <strong className="text-slate-800 font-semibold"> 1 hour given = 1 credit earned.</strong>
             </p>
           </div>
@@ -128,11 +128,10 @@ export default function Landing() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                  selectedCategory === cat
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${selectedCategory === cat
                     ? 'bg-amber-500 text-white shadow-warm'
                     : 'bg-cream-50 text-slate-600 border border-cream-300 hover:border-amber-400 hover:bg-white'
-                }`}
+                  }`}
               >
                 {cat}
               </button>
@@ -196,7 +195,7 @@ export default function Landing() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
+
           {/* Step 1 */}
           <div className="bg-white p-8 rounded-3xl border border-cream-300 shadow-warm relative group hover:border-amber-400 hover:shadow-warm-lg transition-all duration-300">
             <div className="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -245,6 +244,8 @@ export default function Landing() {
 
       {/* 3. POPULAR SKILL EXCHANGES SHOWCASE */}
       <section id="explore" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
+        {/* Anchor alias for community nav link */}
+        <div id="community" className="absolute -mt-24" />
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
           <div className="space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-amber-600 font-display">
@@ -268,7 +269,7 @@ export default function Landing() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {sampleExchanges.map((item) => (
-            <div 
+            <div
               key={item.id}
               className="bg-white rounded-3xl p-6 border border-cream-300 shadow-warm hover:shadow-warm-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
             >
@@ -337,7 +338,7 @@ export default function Landing() {
       <section id="time-credit" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
         <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-warm-lg border border-slate-700">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            
+
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30">
                 <Clock className="w-3.5 h-3.5" />
@@ -348,7 +349,7 @@ export default function Landing() {
                 <span className="text-amber-400">Equal Value for Everyone.</span>
               </h2>
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                Traditional money treats an hour of coding differently from an hour of language tutoring or bike repair. 
+                Traditional money treats an hour of coding differently from an hour of language tutoring or bike repair.
                 At SkillSwap, human time is inherently equal. Everyone gives an hour, everyone gets an hour.
               </p>
               <ul className="space-y-3 text-sm text-slate-300">

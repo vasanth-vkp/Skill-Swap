@@ -48,9 +48,11 @@ export default function LoginForm() {
       navigate(destination, { replace: true });
     } catch (err) {
       if (err.response?.status === 401) {
-        setError('Invalid email or password. Please verify your credentials.');
+        setError('Invalid email or password. Please verify credentials or select a demo account.');
+      } else if (!err.response) {
+        setError('Cannot connect to backend server. Please run run-backend.bat to start it.');
       } else {
-        setError('Unable to log in. Please check your network connection.');
+        setError(err.response?.data?.message || 'Unable to log in. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -143,6 +145,7 @@ export default function LoginForm() {
           Remember this device
         </label>
       </div>
+
 
       {/* Submit Button */}
       <button

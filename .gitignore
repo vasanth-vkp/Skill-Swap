@@ -13,3 +13,9 @@ frontend/.vite/
 *.log
 .DS_Store
 Thumbs.db
+
+# Local database & data
+backend/data/
+*.db
+*.lock.db
+
